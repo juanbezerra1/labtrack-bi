@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1070 740" width="1070" height="740" role="img" aria-label="The model: four dimensions filter Session; Session and Device filter Recording; Recording filters Trial">
+<title>The model of labtrack-bi</title>
+<rect width="1070" height="740" fill="#fcfcfb"/>
+<line x1="145.0" y1="192.0" x2="446.4" y2="287.3" stroke="#52514e" stroke-width="1.5"/>
+<polygon points="455.0,290.0 445.2,291.1 447.6,283.4" fill="#52514e"/>
+<text x="164" y="215" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#52514e" text-anchor="middle">1</text>
+<text x="434" y="277" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#52514e" text-anchor="middle">*</text>
+<line x1="405.0" y1="176.0" x2="502.0" y2="283.3" stroke="#52514e" stroke-width="1.5"/>
+<polygon points="508.0,290.0 499.0,286.0 505.0,280.6" fill="#52514e"/>
+<text x="412" y="206" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#52514e" text-anchor="middle">1</text>
+<text x="499" y="269" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#52514e" text-anchor="middle">*</text>
+<line x1="665.0" y1="192.0" x2="567.6" y2="283.8" stroke="#52514e" stroke-width="1.5"/>
+<polygon points="561.0,290.0 570.3,286.8 564.8,280.9" fill="#52514e"/>
+<text x="656" y="221" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#52514e" text-anchor="middle">1</text>
+<text x="572" y="269" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#52514e" text-anchor="middle">*</text>
+<line x1="925.0" y1="160.0" x2="622.3" y2="286.5" stroke="#52514e" stroke-width="1.5"/>
+<polygon points="614.0,290.0 623.9,290.3 620.7,282.8" fill="#52514e"/>
+<text x="907" y="184" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#52514e" text-anchor="middle">1</text>
+<text x="633" y="275" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#52514e" text-anchor="middle">*</text>
+<line x1="535.0" y1="452.0" x2="535.0" y2="511.0" stroke="#52514e" stroke-width="1.5"/>
+<polygon points="535.0,520.0 539.0,511.0 531.0,511.0" fill="#52514e"/>
+<text x="547" y="480" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#52514e" text-anchor="middle">1</text>
+<text x="523" y="500" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#52514e" text-anchor="middle">*</text>
+<line x1="810.0" y1="601.0" x2="659.0" y2="601.0" stroke="#52514e" stroke-width="1.5"/>
+<polygon points="650.0,601.0 659.0,605.0 659.0,597.0" fill="#52514e"/>
+<text x="786" y="617" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#52514e" text-anchor="middle">1</text>
+<text x="676" y="595" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#52514e" text-anchor="middle">*</text>
+<line x1="420.0" y1="601.0" x2="269.0" y2="601.0" stroke="#52514e" stroke-width="1.5"/>
+<polygon points="260.0,601.0 269.0,605.0 269.0,597.0" fill="#52514e"/>
+<text x="396" y="617" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#52514e" text-anchor="middle">1</text>
+<text x="286" y="595" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#52514e" text-anchor="middle">*</text>
+<rect x="30" y="30" width="230" height="162" rx="6" fill="#ffffff" stroke="#c9c8c4"/>
+<rect x="30" y="30" width="230" height="30" rx="6" fill="#eef4fc"/>
+<text x="40" y="50" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="start">Calendar</text>
+<text x="250" y="50" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#52514e" text-anchor="end">2,192 rows</text>
+<text x="40" y="80" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Date</text>
+<text x="40" y="96" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Year</text>
+<text x="40" y="112" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Quarter</text>
+<text x="40" y="128" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Year-Quarter</text>
+<text x="40" y="144" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Year-Month</text>
+<text x="40" y="160" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Month</text>
+<text x="40" y="176" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">...</text>
+<rect x="290" y="30" width="230" height="146" rx="6" fill="#ffffff" stroke="#c9c8c4"/>
+<rect x="290" y="30" width="230" height="30" rx="6" fill="#eef4fc"/>
+<text x="300" y="50" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="start">Study</text>
+<text x="510" y="50" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#52514e" text-anchor="end">3 rows</text>
+<text x="300" y="80" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Study Code</text>
+<text x="300" y="96" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Study Title</text>
+<text x="300" y="112" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Started On</text>
+<text x="300" y="128" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Ended On</text>
+<text x="300" y="144" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Planned Visits</text>
+<rect x="550" y="30" width="230" height="162" rx="6" fill="#ffffff" stroke="#c9c8c4"/>
+<rect x="550" y="30" width="230" height="30" rx="6" fill="#eef4fc"/>
+<text x="560" y="50" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="start">Participant</text>
+<text x="770" y="50" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#52514e" text-anchor="end">200 rows</text>
+<text x="560" y="80" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Participant Code</text>
+<text x="560" y="96" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Birth Year</text>
+<text x="560" y="112" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Sex</text>
+<text x="560" y="128" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Dominant Hand</text>
+<text x="560" y="144" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Consent Date</text>
+<text x="560" y="160" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Withdrawn On</text>
+<text x="560" y="176" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">...</text>
+<rect x="810" y="30" width="230" height="130" rx="6" fill="#ffffff" stroke="#c9c8c4"/>
+<rect x="810" y="30" width="230" height="30" rx="6" fill="#eef4fc"/>
+<text x="820" y="50" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="start">Researcher</text>
+<text x="1030" y="50" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#52514e" text-anchor="end">12 rows</text>
+<text x="820" y="80" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Researcher</text>
+<text x="820" y="96" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Role</text>
+<text x="820" y="112" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Hired On</text>
+<text x="820" y="128" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Left On</text>
+<rect x="810" y="520" width="230" height="162" rx="6" fill="#ffffff" stroke="#c9c8c4"/>
+<rect x="810" y="520" width="230" height="30" rx="6" fill="#eef4fc"/>
+<text x="820" y="540" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#0b0b0b" text-anchor="start">Device</text>
+<text x="1030" y="540" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#52514e" text-anchor="end">24 rows</text>
+<text x="820" y="570" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Kind</text>
+<text x="820" y="586" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Model</text>
+<text x="820" y="602" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Serial No</text>
+<text x="820" y="618" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Home Room</text>
+<text x="820" y="634" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Acquired On</text>
+<text x="820" y="650" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Retired On</text>
+<rect x="420" y="290" width="230" height="162" rx="6" fill="#ffffff" stroke="#c9c8c4"/>
+<rect x="420" y="290" width="230" height="30" rx="6" fill="#2a78d6"/>
+<text x="430" y="310" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="start">Session</text>
+<text x="640" y="310" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#ffffff" text-anchor="end">909 rows</text>
+<text x="430" y="340" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Session Date</text>
+<text x="430" y="356" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Group</text>
+<text x="430" y="372" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Visit No</text>
+<text x="430" y="388" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Room</text>
+<text x="430" y="404" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Status</text>
+<text x="430" y="420" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Duration Minutes</text>
+<text x="430" y="436" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">...</text>
+<rect x="420" y="520" width="230" height="162" rx="6" fill="#ffffff" stroke="#c9c8c4"/>
+<rect x="420" y="520" width="230" height="30" rx="6" fill="#2a78d6"/>
+<text x="430" y="540" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="start">Recording</text>
+<text x="640" y="540" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#ffffff" text-anchor="end">1,634 rows</text>
+<text x="430" y="570" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Modality</text>
+<text x="430" y="586" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Sampling Rate Hz</text>
+<text x="430" y="602" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Channels</text>
+<text x="430" y="618" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Duration Seconds</text>
+<text x="430" y="634" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Size MB</text>
+<text x="430" y="650" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">QC</text>
+<text x="430" y="666" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">...</text>
+<rect x="30" y="520" width="230" height="162" rx="6" fill="#ffffff" stroke="#c9c8c4"/>
+<rect x="30" y="520" width="230" height="30" rx="6" fill="#2a78d6"/>
+<text x="40" y="540" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="start">Trial</text>
+<text x="250" y="540" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#ffffff" text-anchor="end">45,806 rows</text>
+<text x="40" y="570" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Condition</text>
+<text x="40" y="586" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Trial No</text>
+<text x="40" y="602" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Onset Seconds</text>
+<text x="40" y="618" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Duration Seconds</text>
+<text x="40" y="634" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Valid</text>
+<text x="40" y="650" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">Validity</text>
+<text x="40" y="666" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">...</text>
+<text x="30" y="714" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">1 = the side with one row (the dimension), * = the side with many rows. The arrow shows where the filter goes: from 1 to *, never back.</text>
+</svg>

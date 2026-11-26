@@ -1,0 +1,123 @@
+/// One row per recording (bi.fact_recording). The date comes through Session; the trial counts are counted from the Trial table, so date_key, n_trials and n_valid_trials are not imported.
+table Recording
+	lineageTag: 7394e7de-2509-5e64-9cd2-6d85c37f292d
+
+	column 'Recording Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 164d8506-4d4b-5a11-a03d-b5eb5fece432
+		summarizeBy: none
+		sourceColumn: Recording Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Session Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 84e8bcea-91fb-56ec-9f36-b2f4f334cd38
+		summarizeBy: none
+		sourceColumn: Session Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Device Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 67d55057-d2d9-568b-8960-ef84a45926bf
+		summarizeBy: none
+		sourceColumn: Device Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column Modality
+		dataType: string
+		lineageTag: 0c7d4030-cea0-545b-8ed7-b574b7705aa4
+		summarizeBy: none
+		sourceColumn: Modality
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sampling Rate Hz'
+		dataType: int64
+		formatString: #,0
+		lineageTag: 05400f9d-732a-5163-8fac-bcb1b63e4b9d
+		summarizeBy: none
+		sourceColumn: Sampling Rate Hz
+
+		annotation SummarizationSetBy = Automatic
+
+	column Channels
+		dataType: int64
+		formatString: 0
+		lineageTag: d556fa49-8e01-5f0a-8071-cb1073a9355d
+		summarizeBy: none
+		sourceColumn: Channels
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duration Seconds'
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 10dc5bdf-99b1-5735-ba03-ddc34d9fef4a
+		summarizeBy: none
+		sourceColumn: Duration Seconds
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Size MB'
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 25f93434-731d-51bd-9f05-22748cd7b1ef
+		summarizeBy: none
+		sourceColumn: Size MB
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Quality-control result: Passed, Flagged, Rejected or Pending.
+	column QC
+		dataType: string
+		lineageTag: e2c70c43-97ae-583e-a051-30b28c2b0418
+		summarizeBy: none
+		sourceColumn: QC
+
+		annotation SummarizationSetBy = Automatic
+
+	/// False when the device had no valid passed calibration on the day of the recording.
+	column 'Device Calibrated'
+		dataType: boolean
+		lineageTag: 78dd1167-f5a1-5948-a2ef-c9b891fea9f5
+		summarizeBy: none
+		sourceColumn: Device Calibrated
+
+		annotation SummarizationSetBy = Automatic
+
+	column Calibration
+		dataType: string
+		lineageTag: 64930902-598c-5b96-a7c2-01bac063338e
+		summarizeBy: none
+		sourceColumn: Calibration
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Recording = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(Text.TrimEnd(DataFolder, "\") & "\fact_recording.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Dropped = Table.RemoveColumns(Headers, {"date_key", "n_trials", "n_valid_trials"}),
+				    Cleaned = Table.ReplaceValue(Dropped, "", null, Replacer.ReplaceValue, {"recording_key", "session_key", "device_key", "modality", "sampling_rate_hz", "n_channels", "duration_s", "size_mb", "qc", "device_calibrated"}),
+				    Typed = Table.TransformColumnTypes(Cleaned, {{"recording_key", Int64.Type}, {"session_key", Int64.Type}, {"device_key", Int64.Type}, {"modality", type text}, {"sampling_rate_hz", Int64.Type}, {"n_channels", Int64.Type}, {"duration_s", type number}, {"size_mb", type number}, {"qc", type text}, {"device_calibrated", type logical}}, "en-US"),
+				    Labelled = Table.TransformColumns(Typed, {{"modality", each if _ = null then null else Record.FieldOrDefault([emg = "EMG", eeg = "EEG", force = "Force"], _, _), type text}, {"qc", each if _ = null then null else Text.Proper(Text.Replace(_, "_", " ")), type text}}),
+				    AddCalibration = Table.AddColumn(Labelled, "Calibration", each if [device_calibrated] then "Calibrated" else "Not calibrated", type text),
+				    Renamed = Table.RenameColumns(AddCalibration, {{"recording_key", "Recording Key"}, {"session_key", "Session Key"}, {"device_key", "Device Key"}, {"modality", "Modality"}, {"sampling_rate_hz", "Sampling Rate Hz"}, {"n_channels", "Channels"}, {"duration_s", "Duration Seconds"}, {"size_mb", "Size MB"}, {"qc", "QC"}, {"device_calibrated", "Device Calibrated"}}),
+				    Selected = Table.SelectColumns(Renamed, {"Recording Key", "Session Key", "Device Key", "Modality", "Sampling Rate Hz", "Channels", "Duration Seconds", "Size MB", "QC", "Device Calibrated", "Calibration"})
+				in
+				    Selected
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table

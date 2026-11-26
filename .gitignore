@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# tools
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+node_modules/
+
+# Power BI Desktop: made again on each computer, never shared (cache.abf holds the imported data)
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+# the copies that `labtrack-bi build --reset-project` keeps of the old project folders
+*.backup*/
+
+# editors and systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

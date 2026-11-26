@@ -1,0 +1,90 @@
+/// The studies of the lab (bi.dim_study).
+table Study
+	lineageTag: 741ca4f3-acac-52c5-8a7a-04f68ecce1f2
+
+	column 'Study Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 104a9fcf-06e2-51c2-82a5-b154d95c5cf1
+		summarizeBy: none
+		sourceColumn: Study Key
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Short stable code such as FFB-01.
+	column 'Study Code'
+		dataType: string
+		lineageTag: 6cf91552-fd7e-5daf-ae36-a279af8d9aa5
+		summarizeBy: none
+		sourceColumn: Study Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Study Title'
+		dataType: string
+		lineageTag: 5108a181-4974-5b37-85fe-cfe7dc14e8ac
+		summarizeBy: none
+		sourceColumn: Study Title
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Started On'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 08c649d0-7bdb-5f31-b091-965f84749d3a
+		summarizeBy: none
+		sourceColumn: Started On
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// Empty while the study is open.
+	column 'Ended On'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 14ad2502-837a-5776-99d1-0d198043d1de
+		summarizeBy: none
+		sourceColumn: Ended On
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Planned Visits'
+		dataType: int64
+		formatString: 0
+		lineageTag: f294b8f0-dfe5-51d6-bfee-32c548dc5b25
+		summarizeBy: none
+		sourceColumn: Planned Visits
+
+		annotation SummarizationSetBy = Automatic
+
+	/// How many participants the study aims to enroll. Hidden: use the measure [Target N].
+	column 'Target N'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 18643cd4-bf61-55d0-858b-e7eefe0e5d24
+		summarizeBy: none
+		sourceColumn: Target N
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Study = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(Text.TrimEnd(DataFolder, "\") & "\dim_study.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Cleaned = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, {"study_key", "study_code", "title", "started_on", "ended_on", "planned_visits", "target_n"}),
+				    Typed = Table.TransformColumnTypes(Cleaned, {{"study_key", Int64.Type}, {"study_code", type text}, {"title", type text}, {"started_on", type date}, {"ended_on", type date}, {"planned_visits", Int64.Type}, {"target_n", Int64.Type}}, "en-US"),
+				    Renamed = Table.RenameColumns(Typed, {{"study_key", "Study Key"}, {"study_code", "Study Code"}, {"title", "Study Title"}, {"started_on", "Started On"}, {"ended_on", "Ended On"}, {"planned_visits", "Planned Visits"}, {"target_n", "Target N"}}),
+				    Selected = Table.SelectColumns(Renamed, {"Study Key", "Study Code", "Study Title", "Started On", "Ended On", "Planned Visits", "Target N"})
+				in
+				    Selected
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table

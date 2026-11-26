@@ -1,0 +1,869 @@
+{
+ "data": {
+  "dim_date.csv": "817aa34adac15d5d097461050202c9c05378eeac7afc00477846c9834911d541",
+  "dim_study.csv": "30fc8bdcfcef59baa90888e6ef506a891d54494d8cc625a0da736e71baabcfc0",
+  "dim_participant.csv": "09ef12676c8552e7802700a70b1e77e3687c2d08af49fac8eb85a4ae5b4b029e",
+  "dim_researcher.csv": "ce53df2839b59817c667eaa6b25d7a3cbf6a42574e9d6f25ef31ee6753283852",
+  "dim_device.csv": "c632555c5c1ffed9a852b4a8152b04b652f0def024c7de364e4e15db1ec05aa7",
+  "fact_session.csv": "cd9484dd39cdaa6e8d007e72cbb3a63bfaa7f43d642b6b5494ee820bb17308b4",
+  "fact_recording.csv": "49a2567e76bd0b032e056f175ec652982cb51f605ac73897936e609caf7312d0",
+  "fact_trial.csv": "ec8463f137b83fc750ad9f6c72b7d4a27ff5c52fab69ce5fabe2b71250b5528b"
+ },
+ "checks": [
+  {
+   "id": "overall",
+   "title": "Every measure with no filter",
+   "groups": [],
+   "measures": [
+    "Sessions",
+    "Participants Enrolled",
+    "Participants Attended",
+    "Recordings",
+    "Trials",
+    "Hours Recorded",
+    "Data Volume GB",
+    "Devices Used",
+    "Sessions Completed",
+    "Sessions Cancelled",
+    "Sessions No Show",
+    "Sessions Scheduled",
+    "Sessions Closed",
+    "Completion Rate",
+    "No Show Rate",
+    "Cancellation Rate",
+    "Avg Session Minutes",
+    "Last Completed Session Date",
+    "Completed Sessions Running Total",
+    "Participants Attended Running Total",
+    "Target N",
+    "Recruitment Progress",
+    "Participants Withdrawn",
+    "Withdrawal Rate",
+    "Visit Retention",
+    "Recordings Passed QC",
+    "QC Pass Rate",
+    "Uncalibrated Recordings",
+    "Uncalibrated Rate",
+    "Valid Trials",
+    "Rejected Trials",
+    "Trial Rejection Rate",
+    "Avg Trials per Recording",
+    "Mean Force CV",
+    "Mean Force CV Feedback On",
+    "Mean Force CV Feedback Off",
+    "Feedback Effect on Force CV",
+    "Mean MDF",
+    "Mean RMS",
+    "Mean Alpha Power",
+    "MDF Change After Fatigue",
+    "RMS Change After Fatigue",
+    "Alpha Change Large vs Small Stimulus"
+   ],
+   "where": [],
+   "rows": [
+    [
+     909,
+     200,
+     199,
+     1634,
+     45806,
+     154.502222,
+     10.5025,
+     11,
+     817,
+     54,
+     23,
+     15,
+     894,
+     0.913870246,
+     0.0257270694,
+     0.0604026846,
+     81.8421053,
+     "2026-10-29",
+     817,
+     199,
+     231,
+     0.861471861,
+     6,
+     0.03,
+     null,
+     1423,
+     0.877311961,
+     162,
+     0.0991432069,
+     42052,
+     3754,
+     0.0819543291,
+     28.0330477,
+     4.27909257,
+     4.04247452,
+     4.52644361,
+     -0.48396909,
+     67.8664086,
+     120.330275,
+     24.4263477,
+     -11.0093704,
+     15.252829,
+     -3.91763612
+    ]
+   ]
+  },
+  {
+   "id": "by_study",
+   "title": "By study",
+   "groups": [
+    "Study.Study Code"
+   ],
+   "measures": [
+    "Sessions",
+    "Sessions Completed",
+    "Participants Attended",
+    "Target N",
+    "Recruitment Progress",
+    "Completion Rate",
+    "Avg Session Minutes",
+    "Participants Withdrawn",
+    "Hours Recorded",
+    "Recordings",
+    "Trials",
+    "QC Pass Rate",
+    "Trial Rejection Rate",
+    "Uncalibrated Recordings"
+   ],
+   "where": [],
+   "rows": [
+    [
+     "EEG-02",
+     291,
+     265,
+     67,
+     81,
+     0.827160494,
+     0.910652921,
+     80.8490566,
+     2,
+     50.2655556,
+     530,
+     14903,
+     0.881132075,
+     0.0819969134,
+     25
+    ],
+    [
+     "EMG-03",
+     201,
+     168,
+     46,
+     46,
+     1.0,
+     0.903225806,
+     82.875,
+     2,
+     31.5833333,
+     336,
+     9363,
+     0.895061728,
+     0.0697426039,
+     null
+    ],
+    [
+     "FFB-01",
+     417,
+     384,
+     98,
+     104,
+     0.942307692,
+     0.920863309,
+     82.0755208,
+     2,
+     72.6533333,
+     768,
+     21540,
+     0.8671875,
+     0.0872330548,
+     137
+    ]
+   ]
+  },
+  {
+   "id": "by_year",
+   "title": "By year (time intelligence)",
+   "groups": [
+    "Calendar.Year"
+   ],
+   "measures": [
+    "Sessions",
+    "Sessions Completed",
+    "Sessions YTD",
+    "Sessions Previous Year",
+    "Sessions YoY"
+   ],
+   "where": [],
+   "rows": [
+    [
+     2024,
+     235,
+     216,
+     235,
+     null,
+     null
+    ],
+    [
+     2025,
+     469,
+     431,
+     469,
+     235,
+     0.995744681
+    ],
+    [
+     2026,
+     205,
+     170,
+     205,
+     469,
+     -0.562899787
+    ],
+    [
+     2027,
+     null,
+     null,
+     null,
+     205,
+     -1.0
+    ]
+   ]
+  },
+  {
+   "id": "by_month",
+   "title": "By month (running totals)",
+   "groups": [
+    "Calendar.Year-Month"
+   ],
+   "measures": [
+    "Sessions Completed",
+    "Completed Sessions Running Total",
+    "Participants Attended Running Total",
+    "Sessions YTD"
+   ],
+   "where": [],
+   "rows": [
+    [
+     "2024-03",
+     8,
+     8,
+     5,
+     9
+    ],
+    [
+     "2024-04",
+     31,
+     39,
+     14,
+     42
+    ],
+    [
+     "2024-05",
+     26,
+     65,
+     20,
+     71
+    ],
+    [
+     "2024-06",
+     25,
+     90,
+     28,
+     99
+    ],
+    [
+     "2024-07",
+     32,
+     122,
+     35,
+     134
+    ],
+    [
+     "2024-08",
+     18,
+     140,
+     37,
+     153
+    ],
+    [
+     "2024-09",
+     11,
+     151,
+     41,
+     165
+    ],
+    [
+     "2024-10",
+     12,
+     163,
+     45,
+     178
+    ],
+    [
+     "2024-11",
+     21,
+     184,
+     53,
+     201
+    ],
+    [
+     "2024-12",
+     32,
+     216,
+     59,
+     235
+    ],
+    [
+     "2025-01",
+     26,
+     242,
+     66,
+     28
+    ],
+    [
+     "2025-02",
+     25,
+     267,
+     73,
+     55
+    ],
+    [
+     "2025-03",
+     34,
+     301,
+     79,
+     89
+    ],
+    [
+     "2025-04",
+     37,
+     338,
+     89,
+     127
+    ],
+    [
+     "2025-05",
+     33,
+     371,
+     99,
+     165
+    ],
+    [
+     "2025-06",
+     36,
+     407,
+     108,
+     204
+    ],
+    [
+     "2025-07",
+     36,
+     443,
+     117,
+     244
+    ],
+    [
+     "2025-08",
+     34,
+     477,
+     127,
+     284
+    ],
+    [
+     "2025-09",
+     56,
+     533,
+     137,
+     342
+    ],
+    [
+     "2025-10",
+     49,
+     582,
+     144,
+     396
+    ],
+    [
+     "2025-11",
+     26,
+     608,
+     150,
+     425
+    ],
+    [
+     "2025-12",
+     39,
+     647,
+     159,
+     469
+    ],
+    [
+     "2026-01",
+     37,
+     684,
+     166,
+     40
+    ],
+    [
+     "2026-02",
+     19,
+     703,
+     170,
+     63
+    ],
+    [
+     "2026-03",
+     22,
+     725,
+     175,
+     88
+    ],
+    [
+     "2026-04",
+     13,
+     738,
+     178,
+     102
+    ],
+    [
+     "2026-05",
+     20,
+     758,
+     183,
+     124
+    ],
+    [
+     "2026-06",
+     16,
+     774,
+     187,
+     142
+    ],
+    [
+     "2026-07",
+     12,
+     786,
+     191,
+     155
+    ],
+    [
+     "2026-08",
+     9,
+     795,
+     191,
+     164
+    ],
+    [
+     "2026-09",
+     8,
+     803,
+     195,
+     173
+    ],
+    [
+     "2026-10",
+     14,
+     817,
+     199,
+     190
+    ],
+    [
+     "2026-11",
+     null,
+     null,
+     null,
+     203
+    ],
+    [
+     "2026-12",
+     null,
+     null,
+     null,
+     205
+    ]
+   ]
+  },
+  {
+   "id": "by_status",
+   "title": "Sessions by status",
+   "groups": [
+    "Session.Status"
+   ],
+   "measures": [
+    "Sessions"
+   ],
+   "where": [],
+   "rows": [
+    [
+     "Cancelled",
+     54
+    ],
+    [
+     "Completed",
+     817
+    ],
+    [
+     "No Show",
+     23
+    ],
+    [
+     "Scheduled",
+     15
+    ]
+   ]
+  },
+  {
+   "id": "by_visit",
+   "title": "Participants and retention by visit",
+   "groups": [
+    "Session.Visit No"
+   ],
+   "measures": [
+    "Participants Attended",
+    "Visit Retention"
+   ],
+   "where": [],
+   "rows": [
+    [
+     1,
+     189,
+     1.0
+    ],
+    [
+     2,
+     181,
+     0.957671958
+    ],
+    [
+     3,
+     175,
+     0.925925926
+    ],
+    [
+     4,
+     175,
+     0.925925926
+    ],
+    [
+     5,
+     45,
+     0.238095238
+    ],
+    [
+     6,
+     6,
+     0.0317460317
+    ],
+    [
+     7,
+     1,
+     0.00529100529
+    ]
+   ]
+  },
+  {
+   "id": "by_age_sex",
+   "title": "Participants by age band and sex",
+   "groups": [
+    "Participant.Age Band",
+    "Participant.Sex"
+   ],
+   "measures": [
+    "Participants Attended"
+   ],
+   "where": [],
+   "rows": [
+    [
+     "30-44",
+     "F",
+     25
+    ],
+    [
+     "30-44",
+     "M",
+     29
+    ],
+    [
+     "45-59",
+     "F",
+     22
+    ],
+    [
+     "45-59",
+     "M",
+     20
+    ],
+    [
+     "60+",
+     "F",
+     39
+    ],
+    [
+     "60+",
+     "M",
+     29
+    ],
+    [
+     "Under 30",
+     "F",
+     19
+    ],
+    [
+     "Under 30",
+     "M",
+     16
+    ]
+   ]
+  },
+  {
+   "id": "by_modality",
+   "title": "Data quality by modality",
+   "groups": [
+    "Recording.Modality"
+   ],
+   "measures": [
+    "Recordings",
+    "Trials",
+    "QC Pass Rate",
+    "Uncalibrated Recordings",
+    "Uncalibrated Rate",
+    "Trial Rejection Rate"
+   ],
+   "where": [],
+   "rows": [
+    [
+     "EEG",
+     265,
+     7374,
+     0.875471698,
+     25,
+     0.0943396226,
+     0.0804176838
+    ],
+    [
+     "EMG",
+     985,
+     27746,
+     0.882836588,
+     64,
+     0.0649746193,
+     0.0830750378
+    ],
+    [
+     "Force",
+     384,
+     10686,
+     0.864583333,
+     73,
+     0.190104167,
+     0.08010481
+    ]
+   ]
+  },
+  {
+   "id": "by_qc",
+   "title": "Recordings by quality-control result",
+   "groups": [
+    "Recording.QC"
+   ],
+   "measures": [
+    "Recordings"
+   ],
+   "where": [],
+   "rows": [
+    [
+     "Flagged",
+     137
+    ],
+    [
+     "Passed",
+     1423
+    ],
+    [
+     "Pending",
+     12
+    ],
+    [
+     "Rejected",
+     62
+    ]
+   ]
+  },
+  {
+   "id": "by_reason",
+   "title": "Rejected trials by reason",
+   "groups": [
+    "Trial.Reject Reason"
+   ],
+   "measures": [
+    "Rejected Trials"
+   ],
+   "where": [],
+   "rows": [
+    [
+     "Electrode Noise",
+     941
+    ],
+    [
+     "Force Overshoot",
+     1000
+    ],
+    [
+     "Late Onset",
+     904
+    ],
+    [
+     "Movement Artifact",
+     909
+    ]
+   ]
+  },
+  {
+   "id": "by_device",
+   "title": "Devices",
+   "groups": [
+    "Device.Serial No"
+   ],
+   "measures": [
+    "Recordings",
+    "Uncalibrated Recordings",
+    "Uncalibrated Rate"
+   ],
+   "where": [],
+   "rows": [
+    [
+     "SN-DYN-03",
+     273,
+     73,
+     0.267399267
+    ],
+    [
+     "SN-DYN-04",
+     111,
+     null,
+     null
+    ],
+    [
+     "SN-EEG-01",
+     193,
+     null,
+     null
+    ],
+    [
+     "SN-EEG-02",
+     72,
+     25,
+     0.347222222
+    ],
+    [
+     "SN-EMG-01",
+     166,
+     null,
+     null
+    ],
+    [
+     "SN-EMG-02",
+     72,
+     null,
+     null
+    ],
+    [
+     "SN-EMG-03",
+     273,
+     64,
+     0.234432234
+    ],
+    [
+     "SN-EMG-04",
+     111,
+     null,
+     null
+    ],
+    [
+     "SN-EMG-05",
+     256,
+     null,
+     null
+    ],
+    [
+     "SN-EMG-06",
+     80,
+     null,
+     null
+    ],
+    [
+     "SN-EMG-07",
+     27,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "id": "feedback_by_group",
+   "title": "Force variability by group (study FFB-01)",
+   "groups": [
+    "Session.Group"
+   ],
+   "measures": [
+    "Mean Force CV",
+    "Mean Force CV Feedback On",
+    "Mean Force CV Feedback Off",
+    "Feedback Effect on Force CV"
+   ],
+   "where": [
+    [
+     "Study.Study Code",
+     [
+      "FFB-01"
+     ]
+    ]
+   ],
+   "rows": [
+    [
+     "Control",
+     4.42600472,
+     4.32663522,
+     4.52885083,
+     -0.202215611
+    ],
+    [
+     "Intervention",
+     4.10770046,
+     3.71444683,
+     4.52360408,
+     -0.809157255
+    ]
+   ]
+  },
+  {
+   "id": "findings",
+   "title": "The three effects",
+   "groups": [],
+   "measures": [
+    "Mean MDF",
+    "Mean RMS",
+    "Mean Alpha Power",
+    "MDF Change After Fatigue",
+    "RMS Change After Fatigue",
+    "Alpha Change Large vs Small Stimulus"
+   ],
+   "where": [],
+   "rows": [
+    [
+     67.8664086,
+     120.330275,
+     24.4263477,
+     -11.0093704,
+     15.252829,
+     -3.91763612
+    ]
+   ]
+  }
+ ]
+}

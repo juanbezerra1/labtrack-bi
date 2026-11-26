@@ -1,0 +1,32 @@
+labtrack-bi
+Copyright (c) 2026 Juan Bezerra. MIT License (see LICENSE).
+
+Third-party material
+
+* src/labtrack_bi/resources/m_library.json holds the names and the parameters of 24 functions of the Power Query (M)
+  standard library. They were copied from server/src/library/standard/standard-enUs.json of
+  https://github.com/microsoft/vscode-powerquery (MIT License, Copyright (c) Microsoft Corporation), and are used only by
+  the check of the Power Query files (src/labtrack_bi/mlint.py and tools/check_m.cjs).
+
+* src/labtrack_bi/resources/CY24SU10.json is the base theme that Power BI Desktop writes into every report it saves
+  (it is Microsoft's file). This copy was taken from a report saved by Desktop in
+  https://github.com/alisonpezzott/pbi_file_formats (MIT License, Copyright (c) 2025 Alison Pezzott). The report folder
+  refers to it as BaseThemes/CY24SU10.json.
+
+* tools/check_m.cjs uses @microsoft/powerquery-parser and @microsoft/powerquery-language-services (MIT License,
+  Copyright (c) Microsoft Corporation), installed with `npm install` in tools/; they are not part of this repository.
+
+The MIT License of the material above (the copyright lines are the ones named with each item):
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+  documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+  persons to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+  Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+  COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

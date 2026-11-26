@@ -1,0 +1,85 @@
+/// Amplifiers, dynamometers and stimulators (bi.dim_device).
+table Device
+	lineageTag: da08476e-a0d9-5d8d-8b4f-f5ff5c39c604
+
+	column 'Device Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6208d96d-6c46-5d65-8bee-3a3d1650aa3c
+		summarizeBy: none
+		sourceColumn: Device Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column Kind
+		dataType: string
+		lineageTag: 26409554-72ca-59a8-a362-689f72b27a95
+		summarizeBy: none
+		sourceColumn: Kind
+
+		annotation SummarizationSetBy = Automatic
+
+	column Model
+		dataType: string
+		lineageTag: 47442f19-35ed-59ef-8a17-34b1bc3e5c51
+		summarizeBy: none
+		sourceColumn: Model
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Serial No'
+		dataType: string
+		lineageTag: 9507ebe1-b704-50f9-82f2-580808efd036
+		summarizeBy: none
+		sourceColumn: Serial No
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Home Room'
+		dataType: string
+		lineageTag: 2ddfda6e-f260-5e5d-85f6-e14344b1e2c4
+		summarizeBy: none
+		sourceColumn: Home Room
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Acquired On'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: bf406583-8875-53a3-ac2b-4a8593d6a9aa
+		summarizeBy: none
+		sourceColumn: Acquired On
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Retired On'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 16800fd3-7681-568e-8f0c-b3bcdc0969d2
+		summarizeBy: none
+		sourceColumn: Retired On
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Device = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(Text.TrimEnd(DataFolder, "\") & "\dim_device.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Cleaned = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, {"device_key", "kind", "model", "serial_no", "home_room", "acquired_on", "retired_on"}),
+				    Typed = Table.TransformColumnTypes(Cleaned, {{"device_key", Int64.Type}, {"kind", type text}, {"model", type text}, {"serial_no", type text}, {"home_room", type text}, {"acquired_on", type date}, {"retired_on", type date}}, "en-US"),
+				    Labelled = Table.TransformColumns(Typed, {{"kind", each if _ = null then null else Record.FieldOrDefault([dynamometer = "Dynamometer", eeg_amplifier = "EEG amplifier", emg_amplifier = "EMG amplifier", stimulator = "Stimulator"], _, _), type text}}),
+				    Renamed = Table.RenameColumns(Labelled, {{"device_key", "Device Key"}, {"kind", "Kind"}, {"model", "Model"}, {"serial_no", "Serial No"}, {"home_room", "Home Room"}, {"acquired_on", "Acquired On"}, {"retired_on", "Retired On"}}),
+				    Selected = Table.SelectColumns(Renamed, {"Device Key", "Kind", "Model", "Serial No", "Home Room", "Acquired On", "Retired On"})
+				in
+				    Selected
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
