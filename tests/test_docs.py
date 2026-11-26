@@ -354,6 +354,17 @@ def test_the_workflow_runs_things_that_exist() -> None:
     assert 'node-version: "22"' in text and "ruff format --check ." in text and "mypy src" in text
 
 
+def test_the_job_of_the_schemas_runs_every_test_that_waits_for_them() -> None:
+    """The step that sets LABTRACK_BI_SCHEMAS is the only place where those tests run. A `-k` there that leaves one out
+    would hide it, as `-k schemas` once hid the test of the three small files."""
+    text = read(".github/workflows/ci.yml")
+    step = re.search(r"run: (pytest [^\n]*)\n\s+env:\n\s+LABTRACK_BI_SCHEMAS:", text)
+    assert step, "a step runs pytest with LABTRACK_BI_SCHEMAS set"
+    assert step.group(1).split()[1:] == ["tests/test_pbir.py"], step.group(1)
+    waiting = re.findall(r"skipif\(not SCHEMAS[^\n]*\)\n(?:@[^\n]*\n)*def (test_\w+)", read("tests/test_pbir.py"))
+    assert len(waiting) == 2, waiting
+
+
 @pytest.mark.parametrize("relative", [*GUIDES, "docs/verification.md"])
 def test_the_first_aid_lines_are_the_ones_of_the_schemas(relative: str) -> None:
     text = read(relative)

@@ -26,6 +26,20 @@ def load(root: Path, relative: str) -> dict:  # type: ignore[type-arg]
     return result
 
 
+def project_json_files(root: Path) -> list[Path]:
+    """The JSON files of the report and of the model, and only those. In the job of the CI that runs the schema tests,
+    the clone of Microsoft's schemas sits inside the checkout, and none of its files is ours (some even have comments)."""
+    return sorted(path for folder in (REPORT, MODEL) for path in (root / folder).rglob("*.json"))
+
+
+def test_the_walk_of_the_schema_test_stays_in_the_project_folders(tmp_path: Path) -> None:
+    for parts in ((REPORT,), (MODEL,), ("json-schemas",), ("tools", "node_modules")):
+        folder = tmp_path.joinpath(*parts)
+        folder.mkdir(parents=True)
+        (folder / "a.json").write_text("{}", encoding="utf-8")
+    assert [path.relative_to(tmp_path).parts[0] for path in project_json_files(tmp_path)] == sorted([REPORT, MODEL])
+
+
 def test_the_pages_are_those_of_the_spec_in_order(root: Path) -> None:
     pages = load(root, f"{REPORT}/definition/pages/pages.json")
     assert pages["pageOrder"] == [pbir.page_id(p) for p in PAGES]
@@ -112,9 +126,7 @@ def test_the_json_files_are_valid_against_the_schemas_of_microsoft(root: Path) -
     schemas = Path(str(SCHEMAS))
     jsonschema, registry = schema_tools(schemas)
     checked = 0
-    for path in sorted(root.rglob("*.json")):
-        if ".git" in path.parts or "node_modules" in path.parts:
-            continue
+    for path in project_json_files(root):
         document = json.loads(path.read_text(encoding="utf-8-sig"))
         uri = document.get("$schema") if isinstance(document, dict) else None
         if not uri or not uri.startswith(BASE) or not (schemas / uri[len(BASE) :]).exists():
