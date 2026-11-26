@@ -1,0 +1,130 @@
+/// One row per calendar day from 2023 to 2028, so that time intelligence has no gaps. Marked as the date table.
+table Calendar
+	lineageTag: 1be91f66-338d-50dc-954c-fa366cb70a79
+	dataCategory: Time
+
+	/// The day. The key of the table.
+	column Date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 64310ccc-66dc-592a-a7c2-8c9ae3d8b93e
+		summarizeBy: none
+		isKey
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 9ad70df4-89c6-5c60-affa-d819e4921614
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: dda503f8-b417-519f-a0ae-722e36b6f8f4
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	/// For example 2025 Q3.
+	column 'Year-Quarter'
+		dataType: string
+		lineageTag: c4b3f8f2-2f7a-5a10-8314-bf2efd45bb56
+		summarizeBy: none
+		sourceColumn: Year-Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Orders the month names.
+	column 'Month No'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3c8c1c27-5e48-5405-92d7-6df1d71f8ce2
+		summarizeBy: none
+		sourceColumn: Month No
+
+		annotation SummarizationSetBy = Automatic
+
+	/// For example 2025-03. Sorts correctly as text.
+	column 'Year-Month'
+		dataType: string
+		lineageTag: a51495ad-6a79-5bb9-88af-489234ad318b
+		summarizeBy: none
+		sourceColumn: Year-Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: 2bcee434-2474-52c0-9092-c1dbb76b49a0
+		summarizeBy: none
+		sourceColumn: Month
+		sortByColumn: 'Month No'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Start'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 75306924-ffad-5115-84fa-40ec7ae7f524
+		summarizeBy: none
+		sourceColumn: Month Start
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	/// 1 = Monday ... 7 = Sunday.
+	column 'ISO Weekday'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6634d650-7684-52c0-a54b-354fcf858afb
+		summarizeBy: none
+		sourceColumn: ISO Weekday
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weekday
+		dataType: string
+		lineageTag: e900b225-5f80-5d20-9a74-33f60f11ff99
+		summarizeBy: none
+		sourceColumn: Weekday
+		sortByColumn: 'ISO Weekday'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Weekend'
+		dataType: boolean
+		lineageTag: a7d38679-3335-5dda-a3eb-16f08bf74173
+		summarizeBy: none
+		sourceColumn: Is Weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(Text.TrimEnd(DataFolder, "\") & "\dim_date.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Cleaned = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, {"date_key", "year", "quarter", "month_no", "year_month", "month_name", "month_start", "iso_weekday", "weekday_name", "is_weekend"}),
+				    Typed = Table.TransformColumnTypes(Cleaned, {{"date_key", type date}, {"year", Int64.Type}, {"quarter", Int64.Type}, {"month_no", Int64.Type}, {"year_month", type text}, {"month_name", type text}, {"month_start", type date}, {"iso_weekday", Int64.Type}, {"weekday_name", type text}, {"is_weekend", type logical}}, "en-US"),
+				    AddYearQuarter = Table.AddColumn(Typed, "Year-Quarter", each Text.From([year]) & " Q" & Text.From([quarter]), type text),
+				    Renamed = Table.RenameColumns(AddYearQuarter, {{"date_key", "Date"}, {"year", "Year"}, {"quarter", "Quarter"}, {"month_no", "Month No"}, {"year_month", "Year-Month"}, {"month_name", "Month"}, {"month_start", "Month Start"}, {"iso_weekday", "ISO Weekday"}, {"weekday_name", "Weekday"}, {"is_weekend", "Is Weekend"}}),
+				    Selected = Table.SelectColumns(Renamed, {"Date", "Year", "Quarter", "Year-Quarter", "Month No", "Year-Month", "Month", "Month Start", "ISO Weekday", "Weekday", "Is Weekend"})
+				in
+				    Selected
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table

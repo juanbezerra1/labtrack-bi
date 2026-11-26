@@ -1,0 +1,80 @@
+{
+  "name": "LabTrack",
+  "dataColors": [
+    "#2a78d6",
+    "#eb6834",
+    "#1baf7a",
+    "#eda100",
+    "#e87ba4",
+    "#008300",
+    "#6250d6",
+    "#e34948"
+  ],
+  "bad": "#d03b3b",
+  "neutral": "#fab219",
+  "good": "#0ca30c",
+  "minimum": "#cde2fb",
+  "center": "#2a78d6",
+  "maximum": "#184f95",
+  "foreground": "#0b0b0b",
+  "foregroundNeutralSecondary": "#52514e",
+  "backgroundLight": "#f1f0ee",
+  "foregroundNeutralTertiary": "#c9c8c4",
+  "backgroundNeutral": "#e6e5e1",
+  "textClasses": {
+    "label": {
+      "color": "#0b0b0b",
+      "fontFace": "Segoe UI",
+      "fontSize": 10
+    },
+    "callout": {
+      "color": "#0b0b0b",
+      "fontFace": "Segoe UI",
+      "fontSize": 24
+    },
+    "title": {
+      "color": "#0b0b0b",
+      "fontFace": "Segoe UI",
+      "fontSize": 12
+    },
+    "header": {
+      "color": "#52514e",
+      "fontFace": "Segoe UI",
+      "fontSize": 10
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "border": [
+          {
+            "show": false
+          }
+        ],
+        "visualHeader": [
+          {
+            "foreground": {
+              "solid": {
+                "color": "#52514e"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#fcfcfb"
+              }
+            },
+            "transparency": 0
+          }
+        ]
+      }
+    }
+  }
+}

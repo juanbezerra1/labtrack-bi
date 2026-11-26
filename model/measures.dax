@@ -1,0 +1,207 @@
+// labtrack-bi: the measures of the model, for the manual path.
+// Create a table called Measures (Home > Enter data, one empty column, then delete the column) and, for each block
+// below, Home > New measure and paste the line (or lines) after the comment. Set the format and the display
+// folder that the comment names (Measure tools > Format; Model view > Properties > Display folder).
+// If you opened labtrack.pbip you do not need this file: the project already has the measures.
+
+// 1 Counts | format: #,0
+// Sessions in the current filter, whatever their status.
+Sessions = COUNTROWS(Session)
+
+// 1 Counts | format: #,0
+// Participants with at least one session booked in the current filter.
+Participants Enrolled = DISTINCTCOUNT(Session[Participant Key])
+
+// 1 Counts | format: #,0
+// Participants with at least one completed session. Not additive across studies: one person can be in two.
+Participants Attended = CALCULATE(DISTINCTCOUNT(Session[Participant Key]), Session[Status] = "Completed")
+
+// 1 Counts | format: #,0
+// Recordings in the current filter.
+Recordings = COUNTROWS(Recording)
+
+// 1 Counts | format: #,0
+// Trials in the current filter, valid or rejected.
+Trials = COUNTROWS(Trial)
+
+// 1 Counts | format: #,0.0
+// Total recording time in hours.
+Hours Recorded = DIVIDE(SUM(Recording[Duration Seconds]), 3600)
+
+// 1 Counts | format: #,0.00
+// Total size of the recording files in gigabytes.
+Data Volume GB = DIVIDE(SUM(Recording[Size MB]), 1024)
+
+// 1 Counts | format: #,0
+// Devices that made at least one recording.
+Devices Used = DISTINCTCOUNT(Recording[Device Key])
+
+// 2 Sessions | format: #,0
+// Sessions that took place.
+Sessions Completed = CALCULATE([Sessions], Session[Status] = "Completed")
+
+// 2 Sessions | format: #,0
+// Sessions cancelled.
+Sessions Cancelled = CALCULATE([Sessions], Session[Status] = "Cancelled")
+
+// 2 Sessions | format: #,0
+// Sessions where the participant did not come.
+Sessions No Show = CALCULATE([Sessions], Session[Status] = "No Show")
+
+// 2 Sessions | format: #,0
+// Sessions still in the future.
+Sessions Scheduled = CALCULATE([Sessions], Session[Status] = "Scheduled")
+
+// 2 Sessions | format: #,0
+// Sessions whose day has passed: completed, cancelled or no show.
+Sessions Closed = [Sessions] - [Sessions Scheduled]
+
+// 2 Sessions | format: 0.0%
+// Completed sessions over closed sessions.
+Completion Rate = DIVIDE([Sessions Completed], [Sessions Closed])
+
+// 2 Sessions | format: 0.0%
+// No-show sessions over closed sessions.
+No Show Rate = DIVIDE([Sessions No Show], [Sessions Closed])
+
+// 2 Sessions | format: 0.0%
+// Cancelled sessions over closed sessions.
+Cancellation Rate = DIVIDE([Sessions Cancelled], [Sessions Closed])
+
+// 2 Sessions | format: 0.0
+// Mean length of a completed session, in minutes.
+Avg Session Minutes = CALCULATE(AVERAGE(Session[Duration Minutes]), Session[Status] = "Completed")
+
+// 3 Time | format: Short Date
+// The day of the latest completed session in the current filter.
+Last Completed Session Date = CALCULATE(MAX(Session[Session Date]), Session[Status] = "Completed")
+
+// 3 Time | format: #,0
+// Sessions from 1 January to the end of the period.
+Sessions YTD = TOTALYTD([Sessions], 'Calendar'[Date])
+
+// 3 Time | format: #,0
+// Sessions in the same period one year earlier.
+Sessions Previous Year = CALCULATE([Sessions], SAMEPERIODLASTYEAR('Calendar'[Date]))
+
+// 3 Time | format: 0.0%
+// Change of the number of sessions against the same period one year earlier.
+Sessions YoY = DIVIDE([Sessions] - [Sessions Previous Year], [Sessions Previous Year])
+
+// 3 Time | format: #,0
+// Completed sessions from the start up to the end of the period; blank after the last completed session.
+Completed Sessions Running Total =
+VAR LastDay = CALCULATE([Last Completed Session Date], REMOVEFILTERS('Calendar'))
+VAR ThisDay = MAX('Calendar'[Date])
+RETURN
+    IF(
+        MIN('Calendar'[Date]) <= LastDay,
+        CALCULATE([Sessions Completed], FILTER(ALL('Calendar'), 'Calendar'[Date] <= ThisDay))
+    )
+
+// 3 Time | format: #,0
+// Participants who had attended by the end of the period; blank after the last completed session.
+Participants Attended Running Total =
+VAR LastDay = CALCULATE([Last Completed Session Date], REMOVEFILTERS('Calendar'))
+VAR ThisDay = MAX('Calendar'[Date])
+RETURN
+    IF(
+        MIN('Calendar'[Date]) <= LastDay,
+        CALCULATE([Participants Attended], FILTER(ALL('Calendar'), 'Calendar'[Date] <= ThisDay))
+    )
+
+// 4 Recruitment | format: #,0
+// The number of participants the studies aim to enroll.
+Target N = SUM(Study[Target N])
+
+// 4 Recruitment | format: 0.0%
+// Participants who attended over the target.
+Recruitment Progress = DIVIDE([Participants Attended], [Target N])
+
+// 4 Recruitment | format: #,0
+// Participants with a session in the filter who later withdrew consent.
+Participants Withdrawn = CALCULATE(DISTINCTCOUNT(Session[Participant Key]), Participant[Is Withdrawn] = TRUE())
+
+// 4 Recruitment | format: 0.0%
+// Withdrawn over enrolled.
+Withdrawal Rate = DIVIDE([Participants Withdrawn], [Participants Enrolled])
+
+// 4 Recruitment | format: 0.0%
+// Participants who attended this visit over those who attended visit 1. Blank unless one visit is selected: put Visit No on the axis.
+Visit Retention =
+IF(
+    HASONEVALUE(Session[Visit No]),
+    DIVIDE([Participants Attended], CALCULATE([Participants Attended], Session[Visit No] = 1))
+)
+
+// 5 Quality | format: #,0
+// Recordings that passed quality control.
+Recordings Passed QC = CALCULATE([Recordings], Recording[QC] = "Passed")
+
+// 5 Quality | format: 0.0%
+// Passed over recordings already reviewed (pending ones are left out).
+QC Pass Rate = DIVIDE([Recordings Passed QC], [Recordings] - CALCULATE([Recordings], Recording[QC] = "Pending"))
+
+// 5 Quality | format: #,0
+// Recordings made with a device that had no valid passed calibration that day.
+Uncalibrated Recordings = CALCULATE([Recordings], Recording[Device Calibrated] = FALSE())
+
+// 5 Quality | format: 0.0%
+// Uncalibrated recordings over recordings.
+Uncalibrated Rate = DIVIDE([Uncalibrated Recordings], [Recordings])
+
+// 5 Quality | format: #,0
+// Trials that were not rejected.
+Valid Trials = CALCULATE([Trials], Trial[Valid] = TRUE())
+
+// 5 Quality | format: #,0
+// Trials rejected in review.
+Rejected Trials = CALCULATE([Trials], Trial[Valid] = FALSE())
+
+// 5 Quality | format: 0.0%
+// Rejected trials over trials.
+Trial Rejection Rate = DIVIDE([Rejected Trials], [Trials])
+
+// 5 Quality | format: 0.0
+// Trials divided by recordings.
+Avg Trials per Recording = DIVIDE([Trials], [Recordings])
+
+// 6 Findings | format: 0.000
+// Mean coefficient of variation of the force over valid force trials, in percent.
+Mean Force CV = CALCULATE(AVERAGE(Trial[Force CV]), Trial[Valid] = TRUE())
+
+// 6 Findings | format: 0.000
+// Mean force CV in trials with the feedback on.
+Mean Force CV Feedback On = CALCULATE([Mean Force CV], Trial[Feedback] = "On")
+
+// 6 Findings | format: 0.000
+// Mean force CV in trials with the feedback off.
+Mean Force CV Feedback Off = CALCULATE([Mean Force CV], Trial[Feedback] = "Off")
+
+// 6 Findings | format: 0.000
+// Feedback on minus feedback off; negative means steadier force with the feedback.
+Feedback Effect on Force CV = [Mean Force CV Feedback On] - [Mean Force CV Feedback Off]
+
+// 6 Findings | format: 0.00
+// Mean median frequency of the EMG over valid trials, in hertz.
+Mean MDF = CALCULATE(AVERAGE(Trial[MDF]), Trial[Valid] = TRUE())
+
+// 6 Findings | format: 0.00
+// Mean RMS amplitude of the EMG over valid trials, in microvolts.
+Mean RMS = CALCULATE(AVERAGE(Trial[RMS]), Trial[Valid] = TRUE())
+
+// 6 Findings | format: 0.00
+// Mean alpha band power of the EEG over valid trials, in microvolts squared.
+Mean Alpha Power = CALCULATE(AVERAGE(Trial[Alpha Power]), Trial[Valid] = TRUE())
+
+// 6 Findings | format: 0.00
+// Median frequency after the fatiguing task minus before it, in hertz.
+MDF Change After Fatigue = CALCULATE([Mean MDF], Trial[Fatigue Phase] = "Post") - CALCULATE([Mean MDF], Trial[Fatigue Phase] = "Pre")
+
+// 6 Findings | format: 0.00
+// RMS amplitude after the fatiguing task minus before it, in microvolts.
+RMS Change After Fatigue = CALCULATE([Mean RMS], Trial[Fatigue Phase] = "Post") - CALCULATE([Mean RMS], Trial[Fatigue Phase] = "Pre")
+
+// 6 Findings | format: 0.00
+// Alpha power with the large stimulus minus the small one, in microvolts squared.
+Alpha Change Large vs Small Stimulus = CALCULATE([Mean Alpha Power], Trial[Stimulus Size] = "Large") - CALCULATE([Mean Alpha Power], Trial[Stimulus Size] = "Small")

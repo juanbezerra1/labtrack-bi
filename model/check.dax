@@ -1,0 +1,185 @@
+// labtrack-bi: queries to check the model against docs/expected-numbers.md.
+// Power BI Desktop > DAX query view. Select ONE of the queries below (all of its lines, from EVALUATE to the end)
+// and press Run. Compare the result with the table of the same number in docs/expected-numbers.md.
+
+// ---- 1. Every measure with no filter (overall)
+EVALUATE
+ROW(
+    "Sessions", [Sessions],
+    "Participants Enrolled", [Participants Enrolled],
+    "Participants Attended", [Participants Attended],
+    "Recordings", [Recordings],
+    "Trials", [Trials],
+    "Hours Recorded", [Hours Recorded],
+    "Data Volume GB", [Data Volume GB],
+    "Devices Used", [Devices Used],
+    "Sessions Completed", [Sessions Completed],
+    "Sessions Cancelled", [Sessions Cancelled],
+    "Sessions No Show", [Sessions No Show],
+    "Sessions Scheduled", [Sessions Scheduled],
+    "Sessions Closed", [Sessions Closed],
+    "Completion Rate", [Completion Rate],
+    "No Show Rate", [No Show Rate],
+    "Cancellation Rate", [Cancellation Rate],
+    "Avg Session Minutes", [Avg Session Minutes],
+    "Last Completed Session Date", [Last Completed Session Date],
+    "Completed Sessions Running Total", [Completed Sessions Running Total],
+    "Participants Attended Running Total", [Participants Attended Running Total],
+    "Target N", [Target N],
+    "Recruitment Progress", [Recruitment Progress],
+    "Participants Withdrawn", [Participants Withdrawn],
+    "Withdrawal Rate", [Withdrawal Rate],
+    "Visit Retention", [Visit Retention],
+    "Recordings Passed QC", [Recordings Passed QC],
+    "QC Pass Rate", [QC Pass Rate],
+    "Uncalibrated Recordings", [Uncalibrated Recordings],
+    "Uncalibrated Rate", [Uncalibrated Rate],
+    "Valid Trials", [Valid Trials],
+    "Rejected Trials", [Rejected Trials],
+    "Trial Rejection Rate", [Trial Rejection Rate],
+    "Avg Trials per Recording", [Avg Trials per Recording],
+    "Mean Force CV", [Mean Force CV],
+    "Mean Force CV Feedback On", [Mean Force CV Feedback On],
+    "Mean Force CV Feedback Off", [Mean Force CV Feedback Off],
+    "Feedback Effect on Force CV", [Feedback Effect on Force CV],
+    "Mean MDF", [Mean MDF],
+    "Mean RMS", [Mean RMS],
+    "Mean Alpha Power", [Mean Alpha Power],
+    "MDF Change After Fatigue", [MDF Change After Fatigue],
+    "RMS Change After Fatigue", [RMS Change After Fatigue],
+    "Alpha Change Large vs Small Stimulus", [Alpha Change Large vs Small Stimulus]
+)
+
+// ---- 2. By study (by_study)
+EVALUATE
+SUMMARIZECOLUMNS(
+    Study[Study Code],
+    "Sessions", [Sessions],
+    "Sessions Completed", [Sessions Completed],
+    "Participants Attended", [Participants Attended],
+    "Target N", [Target N],
+    "Recruitment Progress", [Recruitment Progress],
+    "Completion Rate", [Completion Rate],
+    "Avg Session Minutes", [Avg Session Minutes],
+    "Participants Withdrawn", [Participants Withdrawn],
+    "Hours Recorded", [Hours Recorded],
+    "Recordings", [Recordings],
+    "Trials", [Trials],
+    "QC Pass Rate", [QC Pass Rate],
+    "Trial Rejection Rate", [Trial Rejection Rate],
+    "Uncalibrated Recordings", [Uncalibrated Recordings]
+)
+ORDER BY Study[Study Code]
+
+// ---- 3. By year (time intelligence) (by_year)
+EVALUATE
+SUMMARIZECOLUMNS(
+    'Calendar'[Year],
+    "Sessions", [Sessions],
+    "Sessions Completed", [Sessions Completed],
+    "Sessions YTD", [Sessions YTD],
+    "Sessions Previous Year", [Sessions Previous Year],
+    "Sessions YoY", [Sessions YoY]
+)
+ORDER BY 'Calendar'[Year]
+
+// ---- 4. By month (running totals) (by_month)
+EVALUATE
+SUMMARIZECOLUMNS(
+    'Calendar'[Year-Month],
+    "Sessions Completed", [Sessions Completed],
+    "Completed Sessions Running Total", [Completed Sessions Running Total],
+    "Participants Attended Running Total", [Participants Attended Running Total],
+    "Sessions YTD", [Sessions YTD]
+)
+ORDER BY 'Calendar'[Year-Month]
+
+// ---- 5. Sessions by status (by_status)
+EVALUATE
+SUMMARIZECOLUMNS(
+    Session[Status],
+    "Sessions", [Sessions]
+)
+ORDER BY Session[Status]
+
+// ---- 6. Participants and retention by visit (by_visit)
+EVALUATE
+SUMMARIZECOLUMNS(
+    Session[Visit No],
+    "Participants Attended", [Participants Attended],
+    "Visit Retention", [Visit Retention]
+)
+ORDER BY Session[Visit No]
+
+// ---- 7. Participants by age band and sex (by_age_sex)
+EVALUATE
+SUMMARIZECOLUMNS(
+    Participant[Age Band],
+    Participant[Sex],
+    "Participants Attended", [Participants Attended]
+)
+ORDER BY Participant[Age Band], Participant[Sex]
+
+// ---- 8. Data quality by modality (by_modality)
+EVALUATE
+SUMMARIZECOLUMNS(
+    Recording[Modality],
+    "Recordings", [Recordings],
+    "Trials", [Trials],
+    "QC Pass Rate", [QC Pass Rate],
+    "Uncalibrated Recordings", [Uncalibrated Recordings],
+    "Uncalibrated Rate", [Uncalibrated Rate],
+    "Trial Rejection Rate", [Trial Rejection Rate]
+)
+ORDER BY Recording[Modality]
+
+// ---- 9. Recordings by quality-control result (by_qc)
+EVALUATE
+SUMMARIZECOLUMNS(
+    Recording[QC],
+    "Recordings", [Recordings]
+)
+ORDER BY Recording[QC]
+
+// ---- 10. Rejected trials by reason (by_reason)
+EVALUATE
+SUMMARIZECOLUMNS(
+    Trial[Reject Reason],
+    "Rejected Trials", [Rejected Trials]
+)
+ORDER BY Trial[Reject Reason]
+
+// ---- 11. Devices (by_device)
+EVALUATE
+SUMMARIZECOLUMNS(
+    Device[Serial No],
+    "Recordings", [Recordings],
+    "Uncalibrated Recordings", [Uncalibrated Recordings],
+    "Uncalibrated Rate", [Uncalibrated Rate]
+)
+ORDER BY Device[Serial No]
+
+// ---- 12. Force variability by group (study FFB-01) (feedback_by_group)
+EVALUATE
+CALCULATETABLE(
+    SUMMARIZECOLUMNS(
+        Session[Group],
+        "Mean Force CV", [Mean Force CV],
+        "Mean Force CV Feedback On", [Mean Force CV Feedback On],
+        "Mean Force CV Feedback Off", [Mean Force CV Feedback Off],
+        "Feedback Effect on Force CV", [Feedback Effect on Force CV]
+    ),
+    Study[Study Code] = "FFB-01"
+)
+ORDER BY Session[Group]
+
+// ---- 13. The three effects (findings)
+EVALUATE
+ROW(
+    "Mean MDF", [Mean MDF],
+    "Mean RMS", [Mean RMS],
+    "Mean Alpha Power", [Mean Alpha Power],
+    "MDF Change After Fatigue", [MDF Change After Fatigue],
+    "RMS Change After Fatigue", [RMS Change After Fatigue],
+    "Alpha Change Large vs Small Stimulus", [Alpha Change Large vs Small Stimulus]
+)

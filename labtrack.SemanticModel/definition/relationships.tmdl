@@ -1,0 +1,27 @@
+relationship 091bbc8e-a51a-516b-bba8-515abaf7a647
+	fromColumn: Session.'Session Date'
+	toColumn: Calendar.Date
+
+relationship 4d401eeb-6a45-5a0d-9884-8c3dc48344ec
+	fromColumn: Session.'Study Key'
+	toColumn: Study.'Study Key'
+
+relationship 459103f9-e02b-59b2-9403-901df03c7685
+	fromColumn: Session.'Participant Key'
+	toColumn: Participant.'Participant Key'
+
+relationship 3889be36-f5b9-57ab-a47b-00d3812aff1c
+	fromColumn: Session.'Researcher Key'
+	toColumn: Researcher.'Researcher Key'
+
+relationship e454850c-5335-57a6-a5ff-906adec0f2ee
+	fromColumn: Recording.'Session Key'
+	toColumn: Session.'Session Key'
+
+relationship 39b54b2a-bee3-5425-bb43-5e9a8d871094
+	fromColumn: Recording.'Device Key'
+	toColumn: Device.'Device Key'
+
+relationship c9bcbe84-f6a4-5bde-ae7e-5262b57c7536
+	fromColumn: Trial.'Recording Key'
+	toColumn: Recording.'Recording Key'

@@ -1,0 +1,58 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "labtrack-bi"
+version = "0.1.0"
+description = "A Power BI project for a biosignal lab, kept as text: a tested data model, 46 DAX measures, a four-page report specification and checks."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Juan Bezerra" }]
+keywords = ["power-bi", "dax", "tmdl", "pbip", "power-query", "data-modeling", "business-intelligence", "synthetic-data"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Database",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "ruff>=0.5", "mypy>=1.8", "jsonschema>=4.18"]
+
+[project.urls]
+Homepage = "https://github.com/juanbezerra1/labtrack-bi"
+Issues = "https://github.com/juanbezerra1/labtrack-bi/issues"
+
+[project.scripts]
+labtrack-bi = "labtrack_bi.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/labtrack_bi"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "seed: tests that read the project exactly as `labtrack-bi build` writes it (they are skipped once Power BI Desktop has saved it)",
+]
+
+[tool.ruff]
+line-length = 140
+target-version = "py310"
+extend-exclude = ["labtrack.Report", "labtrack.SemanticModel"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["E501"]     # the DAX and the paths in the tests read better on one long line
+"tools/crosscheck_sql.py" = ["E501"]     # the SQL reads better on one long line
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true

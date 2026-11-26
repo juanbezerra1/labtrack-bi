@@ -1,0 +1,14 @@
+{
+  "name": "labtrack-bi-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Checks the Power Query (M) of labtrack-bi with Microsoft's own parser and language services.",
+  "license": "MIT",
+  "scripts": {
+    "check-m": "node check_m.cjs ../model/powerquery ../src/labtrack_bi/resources/m_library.json"
+  },
+  "dependencies": {
+    "@microsoft/powerquery-language-services": "^6.0.0",
+    "@microsoft/powerquery-parser": "^6.0.0"
+  }
+}

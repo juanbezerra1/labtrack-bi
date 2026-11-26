@@ -1,0 +1,318 @@
+/// The measures of the model. Every number in the report comes from here; the model has no implicit measures.
+table Measures
+	lineageTag: a3a8f581-9395-5a56-96de-5424f50b831d
+
+	/// Sessions in the current filter, whatever their status.
+	measure Sessions = COUNTROWS(Session)
+		formatString: #,0
+		displayFolder: 1 Counts
+		lineageTag: 59795c36-383d-5a11-8eec-9ee0e467e2af
+
+	/// Participants with at least one session booked in the current filter.
+	measure 'Participants Enrolled' = DISTINCTCOUNT(Session[Participant Key])
+		formatString: #,0
+		displayFolder: 1 Counts
+		lineageTag: 2a42d6ac-5249-5629-8444-064ef5016692
+
+	/// Participants with at least one completed session. Not additive across studies: one person can be in two.
+	measure 'Participants Attended' = CALCULATE(DISTINCTCOUNT(Session[Participant Key]), Session[Status] = "Completed")
+		formatString: #,0
+		displayFolder: 1 Counts
+		lineageTag: ce803eea-9a07-57c2-8430-0d67ddfac092
+
+	/// Recordings in the current filter.
+	measure Recordings = COUNTROWS(Recording)
+		formatString: #,0
+		displayFolder: 1 Counts
+		lineageTag: 15b93dc0-b466-56b5-bcc3-43308c19a054
+
+	/// Trials in the current filter, valid or rejected.
+	measure Trials = COUNTROWS(Trial)
+		formatString: #,0
+		displayFolder: 1 Counts
+		lineageTag: 8ebd2a52-cec9-5c0e-a056-d25b8b50fee7
+
+	/// Total recording time in hours.
+	measure 'Hours Recorded' = DIVIDE(SUM(Recording[Duration Seconds]), 3600)
+		formatString: #,0.0
+		displayFolder: 1 Counts
+		lineageTag: 9ebb2066-787b-5b6b-a4c9-ac899e864f6d
+
+	/// Total size of the recording files in gigabytes.
+	measure 'Data Volume GB' = DIVIDE(SUM(Recording[Size MB]), 1024)
+		formatString: #,0.00
+		displayFolder: 1 Counts
+		lineageTag: 5519bb3a-2a50-531f-a5e3-b4120f701dac
+
+	/// Devices that made at least one recording.
+	measure 'Devices Used' = DISTINCTCOUNT(Recording[Device Key])
+		formatString: #,0
+		displayFolder: 1 Counts
+		lineageTag: af659bb9-acb3-5aab-93ca-dcbfe099cbbb
+
+	/// Sessions that took place.
+	measure 'Sessions Completed' = CALCULATE([Sessions], Session[Status] = "Completed")
+		formatString: #,0
+		displayFolder: 2 Sessions
+		lineageTag: db4bfcca-b69e-521c-8b84-bfb1cdae3f38
+
+	/// Sessions cancelled.
+	measure 'Sessions Cancelled' = CALCULATE([Sessions], Session[Status] = "Cancelled")
+		formatString: #,0
+		displayFolder: 2 Sessions
+		lineageTag: ce5842c5-cc8f-51ae-993b-c5f465444307
+
+	/// Sessions where the participant did not come.
+	measure 'Sessions No Show' = CALCULATE([Sessions], Session[Status] = "No Show")
+		formatString: #,0
+		displayFolder: 2 Sessions
+		lineageTag: d1ffc525-0489-511e-860b-d2179a765031
+
+	/// Sessions still in the future.
+	measure 'Sessions Scheduled' = CALCULATE([Sessions], Session[Status] = "Scheduled")
+		formatString: #,0
+		displayFolder: 2 Sessions
+		lineageTag: 332cff0e-424e-5f9e-aa07-797b069ff9c9
+
+	/// Sessions whose day has passed: completed, cancelled or no show.
+	measure 'Sessions Closed' = [Sessions] - [Sessions Scheduled]
+		formatString: #,0
+		displayFolder: 2 Sessions
+		lineageTag: 3d92f5f9-5da9-5b64-8ee3-f9181c918e6b
+
+	/// Completed sessions over closed sessions.
+	measure 'Completion Rate' = DIVIDE([Sessions Completed], [Sessions Closed])
+		formatString: 0.0%
+		displayFolder: 2 Sessions
+		lineageTag: 4e58b222-29db-5872-9f79-238e9a001c80
+
+	/// No-show sessions over closed sessions.
+	measure 'No Show Rate' = DIVIDE([Sessions No Show], [Sessions Closed])
+		formatString: 0.0%
+		displayFolder: 2 Sessions
+		lineageTag: 25998052-f9b2-596d-929b-d521259612a7
+
+	/// Cancelled sessions over closed sessions.
+	measure 'Cancellation Rate' = DIVIDE([Sessions Cancelled], [Sessions Closed])
+		formatString: 0.0%
+		displayFolder: 2 Sessions
+		lineageTag: 024adf06-62d4-5343-b93a-ed2dee709eec
+
+	/// Mean length of a completed session, in minutes.
+	measure 'Avg Session Minutes' = CALCULATE(AVERAGE(Session[Duration Minutes]), Session[Status] = "Completed")
+		formatString: 0.0
+		displayFolder: 2 Sessions
+		lineageTag: b9d818ba-a2ad-5009-919b-f7f1edfd511e
+
+	/// The day of the latest completed session in the current filter.
+	measure 'Last Completed Session Date' = CALCULATE(MAX(Session[Session Date]), Session[Status] = "Completed")
+		formatString: Short Date
+		displayFolder: 3 Time
+		lineageTag: 9b7b97d8-4d89-569b-bb8a-62f7f379d53d
+
+	/// Sessions from 1 January to the end of the period.
+	measure 'Sessions YTD' = TOTALYTD([Sessions], 'Calendar'[Date])
+		formatString: #,0
+		displayFolder: 3 Time
+		lineageTag: 1266d63f-5924-5133-b945-6aaf956d7279
+
+	/// Sessions in the same period one year earlier.
+	measure 'Sessions Previous Year' = CALCULATE([Sessions], SAMEPERIODLASTYEAR('Calendar'[Date]))
+		formatString: #,0
+		displayFolder: 3 Time
+		lineageTag: ba89ac8f-c207-5658-8db8-434568961f3a
+
+	/// Change of the number of sessions against the same period one year earlier.
+	measure 'Sessions YoY' = DIVIDE([Sessions] - [Sessions Previous Year], [Sessions Previous Year])
+		formatString: 0.0%
+		displayFolder: 3 Time
+		lineageTag: 09716205-7865-52f9-bca3-af13a54d2812
+
+	/// Completed sessions from the start up to the end of the period; blank after the last completed session.
+	measure 'Completed Sessions Running Total' = ```
+			VAR LastDay = CALCULATE([Last Completed Session Date], REMOVEFILTERS('Calendar'))
+			VAR ThisDay = MAX('Calendar'[Date])
+			RETURN
+			    IF(
+			        MIN('Calendar'[Date]) <= LastDay,
+			        CALCULATE([Sessions Completed], FILTER(ALL('Calendar'), 'Calendar'[Date] <= ThisDay))
+			    )
+			```
+		formatString: #,0
+		displayFolder: 3 Time
+		lineageTag: dc40a0a6-5491-598c-8713-f616e8a9d5b2
+
+	/// Participants who had attended by the end of the period; blank after the last completed session.
+	measure 'Participants Attended Running Total' = ```
+			VAR LastDay = CALCULATE([Last Completed Session Date], REMOVEFILTERS('Calendar'))
+			VAR ThisDay = MAX('Calendar'[Date])
+			RETURN
+			    IF(
+			        MIN('Calendar'[Date]) <= LastDay,
+			        CALCULATE([Participants Attended], FILTER(ALL('Calendar'), 'Calendar'[Date] <= ThisDay))
+			    )
+			```
+		formatString: #,0
+		displayFolder: 3 Time
+		lineageTag: 796f1374-1137-5545-ba3d-2c0a4b19f752
+
+	/// The number of participants the studies aim to enroll.
+	measure 'Target N' = SUM(Study[Target N])
+		formatString: #,0
+		displayFolder: 4 Recruitment
+		lineageTag: 69e3ffdb-6d2b-5ffa-bccb-a68f31bf0741
+
+	/// Participants who attended over the target.
+	measure 'Recruitment Progress' = DIVIDE([Participants Attended], [Target N])
+		formatString: 0.0%
+		displayFolder: 4 Recruitment
+		lineageTag: aa186fe8-15a8-567d-acfe-d59936d946c6
+
+	/// Participants with a session in the filter who later withdrew consent.
+	measure 'Participants Withdrawn' = CALCULATE(DISTINCTCOUNT(Session[Participant Key]), Participant[Is Withdrawn] = TRUE())
+		formatString: #,0
+		displayFolder: 4 Recruitment
+		lineageTag: 0e276c51-1f15-56c5-9e66-8e911382346c
+
+	/// Withdrawn over enrolled.
+	measure 'Withdrawal Rate' = DIVIDE([Participants Withdrawn], [Participants Enrolled])
+		formatString: 0.0%
+		displayFolder: 4 Recruitment
+		lineageTag: 04eaa0aa-706e-5b1a-b392-130918cd3e03
+
+	/// Participants who attended this visit over those who attended visit 1. Blank unless one visit is selected: put Visit No on the axis.
+	measure 'Visit Retention' = ```
+			IF(
+			    HASONEVALUE(Session[Visit No]),
+			    DIVIDE([Participants Attended], CALCULATE([Participants Attended], Session[Visit No] = 1))
+			)
+			```
+		formatString: 0.0%
+		displayFolder: 4 Recruitment
+		lineageTag: a8fa7f04-4f67-5818-87cf-076db0e15965
+
+	/// Recordings that passed quality control.
+	measure 'Recordings Passed QC' = CALCULATE([Recordings], Recording[QC] = "Passed")
+		formatString: #,0
+		displayFolder: 5 Quality
+		lineageTag: e5a12243-875c-5d80-8d69-0f845f4c2c96
+
+	/// Passed over recordings already reviewed (pending ones are left out).
+	measure 'QC Pass Rate' = DIVIDE([Recordings Passed QC], [Recordings] - CALCULATE([Recordings], Recording[QC] = "Pending"))
+		formatString: 0.0%
+		displayFolder: 5 Quality
+		lineageTag: 42a4ae4e-f5f9-573f-8ae3-987f4523dba7
+
+	/// Recordings made with a device that had no valid passed calibration that day.
+	measure 'Uncalibrated Recordings' = CALCULATE([Recordings], Recording[Device Calibrated] = FALSE())
+		formatString: #,0
+		displayFolder: 5 Quality
+		lineageTag: e382f8df-eeb9-59b2-98b7-3005cbe0b6fa
+
+	/// Uncalibrated recordings over recordings.
+	measure 'Uncalibrated Rate' = DIVIDE([Uncalibrated Recordings], [Recordings])
+		formatString: 0.0%
+		displayFolder: 5 Quality
+		lineageTag: 5679e19f-928c-5b3a-b918-377673a72a9c
+
+	/// Trials that were not rejected.
+	measure 'Valid Trials' = CALCULATE([Trials], Trial[Valid] = TRUE())
+		formatString: #,0
+		displayFolder: 5 Quality
+		lineageTag: d9c9a6e6-d905-5eb2-bd1e-6405a62b7a83
+
+	/// Trials rejected in review.
+	measure 'Rejected Trials' = CALCULATE([Trials], Trial[Valid] = FALSE())
+		formatString: #,0
+		displayFolder: 5 Quality
+		lineageTag: 95ded29f-8e7e-56ca-b4fb-00729397951c
+
+	/// Rejected trials over trials.
+	measure 'Trial Rejection Rate' = DIVIDE([Rejected Trials], [Trials])
+		formatString: 0.0%
+		displayFolder: 5 Quality
+		lineageTag: 15170717-d60e-587a-bb8d-77dcec58e800
+
+	/// Trials divided by recordings.
+	measure 'Avg Trials per Recording' = DIVIDE([Trials], [Recordings])
+		formatString: 0.0
+		displayFolder: 5 Quality
+		lineageTag: 3bc83e70-7ee7-504f-b83c-294916073ef4
+
+	/// Mean coefficient of variation of the force over valid force trials, in percent.
+	measure 'Mean Force CV' = CALCULATE(AVERAGE(Trial[Force CV]), Trial[Valid] = TRUE())
+		formatString: 0.000
+		displayFolder: 6 Findings
+		lineageTag: 0269ceb4-016d-5b34-a9b4-901f550ea1a6
+
+	/// Mean force CV in trials with the feedback on.
+	measure 'Mean Force CV Feedback On' = CALCULATE([Mean Force CV], Trial[Feedback] = "On")
+		formatString: 0.000
+		displayFolder: 6 Findings
+		lineageTag: 626c0ccf-4d99-517b-ad20-db3f72446797
+
+	/// Mean force CV in trials with the feedback off.
+	measure 'Mean Force CV Feedback Off' = CALCULATE([Mean Force CV], Trial[Feedback] = "Off")
+		formatString: 0.000
+		displayFolder: 6 Findings
+		lineageTag: 79fcd07f-7739-5b76-8221-87d75e1557d2
+
+	/// Feedback on minus feedback off; negative means steadier force with the feedback.
+	measure 'Feedback Effect on Force CV' = [Mean Force CV Feedback On] - [Mean Force CV Feedback Off]
+		formatString: 0.000
+		displayFolder: 6 Findings
+		lineageTag: 21340809-1660-520a-a183-2e4a87f45c07
+
+	/// Mean median frequency of the EMG over valid trials, in hertz.
+	measure 'Mean MDF' = CALCULATE(AVERAGE(Trial[MDF]), Trial[Valid] = TRUE())
+		formatString: 0.00
+		displayFolder: 6 Findings
+		lineageTag: b0ad487f-adec-5252-980a-172884774db0
+
+	/// Mean RMS amplitude of the EMG over valid trials, in microvolts.
+	measure 'Mean RMS' = CALCULATE(AVERAGE(Trial[RMS]), Trial[Valid] = TRUE())
+		formatString: 0.00
+		displayFolder: 6 Findings
+		lineageTag: 56de5d0c-8bd1-52f9-a9f0-0069879ed65c
+
+	/// Mean alpha band power of the EEG over valid trials, in microvolts squared.
+	measure 'Mean Alpha Power' = CALCULATE(AVERAGE(Trial[Alpha Power]), Trial[Valid] = TRUE())
+		formatString: 0.00
+		displayFolder: 6 Findings
+		lineageTag: c8ba3149-170e-57c5-9d61-21c411fe84dc
+
+	/// Median frequency after the fatiguing task minus before it, in hertz.
+	measure 'MDF Change After Fatigue' = CALCULATE([Mean MDF], Trial[Fatigue Phase] = "Post") - CALCULATE([Mean MDF], Trial[Fatigue Phase] = "Pre")
+		formatString: 0.00
+		displayFolder: 6 Findings
+		lineageTag: 92cc3817-2a03-5a4f-b6a8-c8b79b8f0c18
+
+	/// RMS amplitude after the fatiguing task minus before it, in microvolts.
+	measure 'RMS Change After Fatigue' = CALCULATE([Mean RMS], Trial[Fatigue Phase] = "Post") - CALCULATE([Mean RMS], Trial[Fatigue Phase] = "Pre")
+		formatString: 0.00
+		displayFolder: 6 Findings
+		lineageTag: d16961f2-1639-5b86-b7de-ff37cf9ab9eb
+
+	/// Alpha power with the large stimulus minus the small one, in microvolts squared.
+	measure 'Alpha Change Large vs Small Stimulus' = CALCULATE([Mean Alpha Power], Trial[Stimulus Size] = "Large") - CALCULATE([Mean Alpha Power], Trial[Stimulus Size] = "Small")
+		formatString: 0.00
+		displayFolder: 6 Findings
+		lineageTag: ad36f18a-08a8-5e19-9eb5-981fc249d095
+
+	column Value
+		isHidden
+		formatString: 0
+		lineageTag: 2f6ccd21-4140-5109-8a4a-a1fde4fbf719
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Measures = calculated
+		mode: import
+		source = ```
+				{0}
+				```
+
+	annotation PBI_Id = bb6bb5a314b55a779acdd22b1b6ca1f3

@@ -1,0 +1,24 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["DataFolder","Calendar","Study","Participant","Researcher","Device","Session","Recording","Trial"]
+
+ref table Calendar
+ref table Device
+ref table Measures
+ref table Participant
+ref table Recording
+ref table Researcher
+ref table Session
+ref table Study
+ref table Trial
+
+ref cultureInfo en-US

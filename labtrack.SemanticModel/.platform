@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "labtrack"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "a67a6e40-aac1-5425-9dff-6d98014f4ba1"
+  }
+}

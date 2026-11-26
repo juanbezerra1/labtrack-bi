@@ -1,0 +1,4 @@
+expression DataFolder = "C:\labtrack-bi\data" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: 1adf41ea-d4b9-5c6c-a06b-2699d5ac9253
+
+	annotation PBI_ResultType = Text

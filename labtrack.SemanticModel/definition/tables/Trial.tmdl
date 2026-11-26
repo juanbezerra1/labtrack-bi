@@ -1,0 +1,205 @@
+/// One row per trial (bi.fact_trial). The session, the date and the modality come through Recording, so session_key, date_key and modality are not imported. The factors of the condition are split into columns here.
+table Trial
+	lineageTag: 43668d85-1533-5da3-98b8-7155a362ad72
+
+	column 'Trial Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a45e77d2-bfac-510e-8b39-c4c0abd8d634
+		summarizeBy: none
+		sourceColumn: Trial Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Recording Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f4c754c4-0d56-50b3-8f7c-3f9b64dd2020
+		summarizeBy: none
+		sourceColumn: Recording Key
+
+		annotation SummarizationSetBy = Automatic
+
+	/// For example hold_40_fb: hold at 40 percent of maximum force, feedback on.
+	column Condition
+		dataType: string
+		lineageTag: 48b6ed0f-6bf3-5468-a16c-df877d53c22f
+		summarizeBy: none
+		sourceColumn: Condition
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Trial No'
+		dataType: int64
+		formatString: 0
+		lineageTag: febcee2f-e28b-50d0-9c3d-d7bf6cf47e0d
+		summarizeBy: none
+		sourceColumn: Trial No
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Onset Seconds'
+		dataType: double
+		formatString: 0.000
+		lineageTag: da40d910-319a-5b3b-b3ee-3fa6103c4c4d
+		summarizeBy: none
+		sourceColumn: Onset Seconds
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duration Seconds'
+		dataType: double
+		formatString: 0.000
+		lineageTag: 6ab4b6c1-f4b8-5dde-a968-facc464ad261
+		summarizeBy: none
+		sourceColumn: Duration Seconds
+
+		annotation SummarizationSetBy = Automatic
+
+	/// False when the trial was rejected in review.
+	column Valid
+		dataType: boolean
+		lineageTag: 615d0ca7-6b20-563a-a255-047d2ca2ccc8
+		summarizeBy: none
+		sourceColumn: Valid
+
+		annotation SummarizationSetBy = Automatic
+
+	column Validity
+		dataType: string
+		lineageTag: fa7b0f10-2507-562a-9cc9-0fb8883a3288
+		summarizeBy: none
+		sourceColumn: Validity
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reject Reason'
+		dataType: string
+		lineageTag: 2f408a92-2a25-5e7a-a2b8-de0858c1d8b8
+		summarizeBy: none
+		sourceColumn: Reject Reason
+
+		annotation SummarizationSetBy = Automatic
+
+	/// On or Off for the force-feedback trials; empty for the others.
+	column Feedback
+		dataType: string
+		lineageTag: 3a0640d1-53ed-58cf-bd10-5cd31df18b1a
+		summarizeBy: none
+		sourceColumn: Feedback
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Percent of maximum force of a hold trial; empty for the others.
+	column 'Hold Level'
+		dataType: int64
+		formatString: 0
+		lineageTag: db05b9e4-e9a4-59b9-a6b7-1e6c8eaa98a3
+		summarizeBy: none
+		sourceColumn: Hold Level
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Pre or Post the fatiguing task; empty outside EMG-03.
+	column 'Fatigue Phase'
+		dataType: string
+		lineageTag: 98def912-5464-5021-ad80-d495c4737b1e
+		summarizeBy: none
+		sourceColumn: Fatigue Phase
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Small or Large visual stimulus; empty outside EEG-02.
+	column 'Stimulus Size'
+		dataType: string
+		lineageTag: 50595b07-874e-51fd-900f-a4a0479575c4
+		summarizeBy: none
+		sourceColumn: Stimulus Size
+
+		annotation SummarizationSetBy = Automatic
+
+	/// EMG: root mean square amplitude in microvolts, mean of the channels.
+	column RMS
+		dataType: double
+		formatString: 0.00
+		lineageTag: af8cf8ea-88c9-53d7-96cb-ca498d9b3c57
+		summarizeBy: none
+		sourceColumn: RMS
+
+		annotation SummarizationSetBy = Automatic
+
+	/// EMG: mean frequency of the spectrum in hertz, mean of the channels.
+	column MNF
+		dataType: double
+		formatString: 0.00
+		lineageTag: 2245e018-019e-5563-8016-95e076e2eb1d
+		summarizeBy: none
+		sourceColumn: MNF
+
+		annotation SummarizationSetBy = Automatic
+
+	/// EMG: median frequency of the spectrum in hertz, mean of the channels.
+	column MDF
+		dataType: double
+		formatString: 0.00
+		lineageTag: 548897c8-6e13-5831-9011-32858dcd4703
+		summarizeBy: none
+		sourceColumn: MDF
+
+		annotation SummarizationSetBy = Automatic
+
+	/// EEG: band power at 8 to 13 Hz in microvolts squared, mean of the channels.
+	column 'Alpha Power'
+		dataType: double
+		formatString: 0.00
+		lineageTag: 1ec214ba-9461-5221-8553-c3d6317e775e
+		summarizeBy: none
+		sourceColumn: Alpha Power
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Force: the highest force of the trial in newtons.
+	column 'Peak Force'
+		dataType: double
+		formatString: 0.0
+		lineageTag: 42450b13-0d31-56d7-9297-2638b6d2122c
+		summarizeBy: none
+		sourceColumn: Peak Force
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Force: coefficient of variation of the force in the hold phase, in percent. Lower is steadier.
+	column 'Force CV'
+		dataType: double
+		formatString: 0.000
+		lineageTag: 4438622c-d9be-5404-867a-c98d6279f227
+		summarizeBy: none
+		sourceColumn: Force CV
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Trial = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(Text.TrimEnd(DataFolder, "\") & "\fact_trial.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Dropped = Table.RemoveColumns(Headers, {"session_key", "date_key", "modality"}),
+				    Cleaned = Table.ReplaceValue(Dropped, "", null, Replacer.ReplaceValue, {"trial_key", "recording_key", "condition", "trial_no", "onset_s", "duration_s", "valid", "reject_reason", "rms_mean_uv", "mnf_hz", "mdf_hz", "alpha_power_uv2", "peak_force_n", "force_cv_pct"}),
+				    Typed = Table.TransformColumnTypes(Cleaned, {{"trial_key", Int64.Type}, {"recording_key", Int64.Type}, {"condition", type text}, {"trial_no", Int64.Type}, {"onset_s", type number}, {"duration_s", type number}, {"valid", type logical}, {"reject_reason", type text}, {"rms_mean_uv", type number}, {"mnf_hz", type number}, {"mdf_hz", type number}, {"alpha_power_uv2", type number}, {"peak_force_n", type number}, {"force_cv_pct", type number}}, "en-US"),
+				    Labelled = Table.TransformColumns(Typed, {{"reject_reason", each if _ = null then null else Text.Proper(Text.Replace(_, "_", " ")), type text}}),
+				    AddValidity = Table.AddColumn(Labelled, "Validity", each if [valid] then "Valid" else "Rejected", type text),
+				    AddFeedback = Table.AddColumn(AddValidity, "Feedback", each if Text.EndsWith([condition], "_nofb") then "Off" else if Text.EndsWith([condition], "_fb") then "On" else null, type text),
+				    AddHoldLevel = Table.AddColumn(AddFeedback, "Hold Level", each if Text.StartsWith([condition], "hold_") then Int64.From(Number.FromText(Text.Middle([condition], 5, 2))) else null, Int64.Type),
+				    AddFatiguePhase = Table.AddColumn(AddHoldLevel, "Fatigue Phase", each if Text.StartsWith([condition], "fatigue_") then (if Text.EndsWith([condition], "_post") then "Post" else "Pre") else null, type text),
+				    AddStimulusSize = Table.AddColumn(AddFatiguePhase, "Stimulus Size", each if Text.StartsWith([condition], "stimulus_") then (if Text.EndsWith([condition], "_large") then "Large" else "Small") else null, type text),
+				    Renamed = Table.RenameColumns(AddStimulusSize, {{"trial_key", "Trial Key"}, {"recording_key", "Recording Key"}, {"condition", "Condition"}, {"trial_no", "Trial No"}, {"onset_s", "Onset Seconds"}, {"duration_s", "Duration Seconds"}, {"valid", "Valid"}, {"reject_reason", "Reject Reason"}, {"rms_mean_uv", "RMS"}, {"mnf_hz", "MNF"}, {"mdf_hz", "MDF"}, {"alpha_power_uv2", "Alpha Power"}, {"peak_force_n", "Peak Force"}, {"force_cv_pct", "Force CV"}}),
+				    Selected = Table.SelectColumns(Renamed, {"Trial Key", "Recording Key", "Condition", "Trial No", "Onset Seconds", "Duration Seconds", "Valid", "Validity", "Reject Reason", "Feedback", "Hold Level", "Fatigue Phase", "Stimulus Size", "RMS", "MNF", "MDF", "Alpha Power", "Peak Force", "Force CV"})
+				in
+				    Selected
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,127 @@
+/// One row per session (bi.fact_session). Its recordings are counted from the Recording table, so the two pre-computed columns n_recordings and hours_recorded are not imported.
+table Session
+	lineageTag: d86d19b4-b033-5e9c-afad-12274b061dd0
+
+	column 'Session Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: aa979b53-2ba5-56fb-be93-92464243a13e
+		summarizeBy: none
+		sourceColumn: Session Key
+
+		annotation SummarizationSetBy = Automatic
+
+	/// The lab's calendar day of the session.
+	column 'Session Date'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 542bf2dc-59b4-5e8c-a736-80ee838c5418
+		summarizeBy: none
+		sourceColumn: Session Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Study Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4453f7de-ec7f-5fbc-b2c3-4b306eb29483
+		summarizeBy: none
+		sourceColumn: Study Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Participant Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 809be4cb-a35b-569c-8f58-7cc95c7c95f8
+		summarizeBy: none
+		sourceColumn: Participant Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Researcher Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7443ff7d-763d-5492-83b1-9bf75a0ce506
+		summarizeBy: none
+		sourceColumn: Researcher Key
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Control or intervention.
+	column Group
+		dataType: string
+		lineageTag: 57c1867e-77fd-5099-bb3b-c89d0ba028cf
+		summarizeBy: none
+		sourceColumn: Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Visit No'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8024a418-1675-5583-8078-5814d1918edb
+		summarizeBy: none
+		sourceColumn: Visit No
+
+		annotation SummarizationSetBy = Automatic
+
+	column Room
+		dataType: string
+		lineageTag: 11856480-5484-52ab-9eb0-2cbdcf33364d
+		summarizeBy: none
+		sourceColumn: Room
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Completed, Cancelled, No Show or Scheduled (a session in the future).
+	column Status
+		dataType: string
+		lineageTag: f6add8e4-5038-524d-9ac4-512538c4ba5a
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duration Minutes'
+		dataType: int64
+		formatString: 0
+		lineageTag: c97f7ef0-b6f4-5b50-864d-bae7771f0a09
+		summarizeBy: none
+		sourceColumn: Duration Minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Starts At'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3ba353de-ba6c-5d32-9749-ea037588a1ad
+		summarizeBy: none
+		sourceColumn: Starts At
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Session = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(Text.TrimEnd(DataFolder, "\") & "\fact_session.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Dropped = Table.RemoveColumns(Headers, {"n_recordings", "hours_recorded"}),
+				    Cleaned = Table.ReplaceValue(Dropped, "", null, Replacer.ReplaceValue, {"session_key", "date_key", "study_key", "participant_key", "researcher_key", "group_label", "visit_no", "room", "status", "duration_min", "starts_local"}),
+				    Typed = Table.TransformColumnTypes(Cleaned, {{"session_key", Int64.Type}, {"date_key", type date}, {"study_key", Int64.Type}, {"participant_key", Int64.Type}, {"researcher_key", Int64.Type}, {"group_label", type text}, {"visit_no", Int64.Type}, {"room", type text}, {"status", type text}, {"duration_min", Int64.Type}, {"starts_local", type datetime}}, "en-US"),
+				    Labelled = Table.TransformColumns(Typed, {{"group_label", each if _ = null then null else Text.Proper(Text.Replace(_, "_", " ")), type text}, {"status", each if _ = null then null else Text.Proper(Text.Replace(_, "_", " ")), type text}}),
+				    Renamed = Table.RenameColumns(Labelled, {{"session_key", "Session Key"}, {"date_key", "Session Date"}, {"study_key", "Study Key"}, {"participant_key", "Participant Key"}, {"researcher_key", "Researcher Key"}, {"group_label", "Group"}, {"visit_no", "Visit No"}, {"room", "Room"}, {"status", "Status"}, {"duration_min", "Duration Minutes"}, {"starts_local", "Starts At"}}),
+				    Selected = Table.SelectColumns(Renamed, {"Session Key", "Session Date", "Study Key", "Participant Key", "Researcher Key", "Group", "Visit No", "Room", "Status", "Duration Minutes", "Starts At"})
+				in
+				    Selected
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table

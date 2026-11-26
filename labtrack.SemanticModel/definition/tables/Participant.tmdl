@@ -1,0 +1,135 @@
+/// Pseudonymised participants (bi.dim_participant), plus age columns made here.
+table Participant
+	lineageTag: 5c0453fb-75eb-5f56-afc4-8fb4ca4980fe
+
+	column 'Participant Key'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c997c0f4-aaf2-5323-89e7-2fe3477f15f7
+		summarizeBy: none
+		sourceColumn: Participant Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Participant Code'
+		dataType: string
+		lineageTag: e98d1bab-80b3-537c-b2e9-a710c8e912e9
+		summarizeBy: none
+		sourceColumn: Participant Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Birth Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9ae50db8-5b8e-5846-b535-2c3c9312c8ec
+		summarizeBy: none
+		sourceColumn: Birth Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sex
+		dataType: string
+		lineageTag: 1c173437-7047-585e-a8cc-1301ae47c66f
+		summarizeBy: none
+		sourceColumn: Sex
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dominant Hand'
+		dataType: string
+		lineageTag: aed09bf7-4b2e-500c-bda4-0be1bb95c1b5
+		summarizeBy: none
+		sourceColumn: Dominant Hand
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Consent Date'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 883275e8-9c4e-50d2-9072-14fbbb95fec1
+		summarizeBy: none
+		sourceColumn: Consent Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Withdrawn On'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: d6e331cc-f5ac-5558-bbae-e511e65c3533
+		summarizeBy: none
+		sourceColumn: Withdrawn On
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Is Withdrawn'
+		dataType: boolean
+		lineageTag: 98a96f50-5ea1-519c-ba90-a089cc26a33a
+		summarizeBy: none
+		sourceColumn: Is Withdrawn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 61e61aa4-3c32-53b1-807e-afbd689c1531
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Year of the consent minus birth year.
+	column 'Age at Consent'
+		dataType: int64
+		formatString: 0
+		lineageTag: ad417342-2301-5c57-8048-ccb6bad47c9e
+		summarizeBy: none
+		sourceColumn: Age at Consent
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Age Band'
+		dataType: string
+		lineageTag: 0b3765f6-d6e6-5b89-b5b4-46f32ec47932
+		summarizeBy: none
+		sourceColumn: Age Band
+		sortByColumn: 'Age Band Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Age Band Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 1c8cdfd3-5b6d-509c-9cfd-0bfc0f32e280
+		summarizeBy: none
+		sourceColumn: Age Band Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Participant = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(Text.TrimEnd(DataFolder, "\") & "\dim_participant.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Cleaned = Table.ReplaceValue(Headers, "", null, Replacer.ReplaceValue, {"participant_key", "participant_code", "birth_year", "sex", "dominant_hand", "consent_signed_on", "withdrawn_on", "is_withdrawn"}),
+				    Typed = Table.TransformColumnTypes(Cleaned, {{"participant_key", Int64.Type}, {"participant_code", type text}, {"birth_year", Int64.Type}, {"sex", type text}, {"dominant_hand", type text}, {"consent_signed_on", type date}, {"withdrawn_on", type date}, {"is_withdrawn", type logical}}, "en-US"),
+				    Labelled = Table.TransformColumns(Typed, {{"dominant_hand", each if _ = null then null else Text.Proper(Text.Replace(_, "_", " ")), type text}}),
+				    AddStatus = Table.AddColumn(Labelled, "Status", each if [is_withdrawn] then "Withdrawn" else "Active", type text),
+				    AddAgeAtConsent = Table.AddColumn(AddStatus, "Age at Consent", each Date.Year([consent_signed_on]) - [birth_year], Int64.Type),
+				    AddAgeBand = Table.AddColumn(AddAgeAtConsent, "Age Band", each if [Age at Consent] < 30 then "Under 30" else if [Age at Consent] < 45 then "30-44" else if [Age at Consent] < 60 then "45-59" else "60+", type text),
+				    AddAgeBandOrder = Table.AddColumn(AddAgeBand, "Age Band Order", each if [Age at Consent] < 30 then 1 else if [Age at Consent] < 45 then 2 else if [Age at Consent] < 60 then 3 else 4, Int64.Type),
+				    Renamed = Table.RenameColumns(AddAgeBandOrder, {{"participant_key", "Participant Key"}, {"participant_code", "Participant Code"}, {"birth_year", "Birth Year"}, {"sex", "Sex"}, {"dominant_hand", "Dominant Hand"}, {"consent_signed_on", "Consent Date"}, {"withdrawn_on", "Withdrawn On"}, {"is_withdrawn", "Is Withdrawn"}}),
+				    Selected = Table.SelectColumns(Renamed, {"Participant Key", "Participant Code", "Birth Year", "Sex", "Dominant Hand", "Consent Date", "Withdrawn On", "Is Withdrawn", "Status", "Age at Consent", "Age Band", "Age Band Order"})
+				in
+				    Selected
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
