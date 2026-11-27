@@ -10,12 +10,12 @@ file writes `py`.
 |---|---|---|
 | The expected numbers (13 tables, every measure) | two independent routes: [`src/labtrack_bi/engine.py`](../src/labtrack_bi/engine.py), a hand-written second version of the 46 measures that reads the CSV files, against SQL written from the definitions of the measures and run on the database that the files came from ([`tools/crosscheck_sql.py`](../tools/crosscheck_sql.py)) | 0 differences |
 | Every generated file | `py -m labtrack_bi check`, and the tests, compare each one byte by byte with what the specification produces | up to date |
-| The tests | `py -m pytest` | 289 passed on Python 3.10, 3.12 and 3.13 (Linux), with the schema tests switched on; without the clone of the schemas, 285 passed and 4 were skipped |
+| The tests | `py -m pytest` | 291 passed on Python 3.10, 3.12 and 3.13 (Linux), with the schema tests switched on; without the clone of the schemas, 287 passed and 4 were skipped |
 | The Power Query (nine queries) | the parser and the language services that Microsoft publishes for Visual Studio Code ([`tools/`](../tools/README.md)), and a smaller linter in Python that runs with the tests | 0 queries with problems |
 | The JSON files of the report | Microsoft's published schemas ([json-schemas](https://github.com/microsoft/json-schemas)) | the 7 files that carry a `$schema` are valid; see "Three small files" below for the others |
 | The colours of the theme | a palette validator (lightness band, chroma, distance between neighbours for colour-blind readers, contrast), light mode, surface `#fcfcfb`; I ran it once with the `dataviz` skill of Claude, so it is **not** in this repository and you cannot repeat it from here | passes every check; one contrast **warning**, kept on purpose (see [design.md](design.md#colours)) |
 | Style and types | `ruff check`, `ruff format --check`, `mypy` in strict mode on `src` | clean |
-| A checkout with Windows line endings | a clone with `core.autocrlf=true`, then the tests and `check` | 289 passed, `ok` |
+| A checkout with Windows line endings | a clone with `core.autocrlf=true`, then the tests and `check` | 291 passed, `ok` |
 | The wheel | `py -m build --wheel`, installed in a clean environment | installs, `--version` runs, the resource files are inside |
 | The zip of the repository | extracted names and path lengths checked for what Windows refuses (reserved names, characters, case collisions, long paths) and every text file checked for LF | no problem |
 
@@ -44,7 +44,7 @@ py tools/crosscheck_sql.py --dsn "host=localhost user=postgres password=postgres
 
 ## What the tests cover
 
-`py -m pytest` runs 289 tests (4 of them need the clone of the schemas, see the end of this file), in a few seconds and
+`py -m pytest` runs 291 tests (4 of them need the clone of the schemas, see the end of this file), in a few seconds and
 without Power BI, a database or a network:
 
 * **The data**: checksums, row counts, every header accounted for, UTF-8 and LF, unique keys, every foreign key with its
@@ -76,9 +76,12 @@ without Power BI, a database or a network:
 * **The DAX was never run by a DAX engine.** The 46 measures were linted and re-implemented, not executed. A difference
   between a number of `check.dax` and `expected-numbers.md` in Phase A is a bug of the model, or of my reading of DAX.
 * **The wireframes are drawings made from the specification**, not screenshots of Power BI.
-* **The workflow of the CI was not run on GitHub** when I wrote this. I ran each of its steps by hand: the tests on
-  three Python versions, lint, format, types, the schema test, the check of the Power Query, the build of the wheel,
-  and a clone with Windows line endings. The Windows runners are the one thing that I could only imitate.
+* **The workflow of the CI ran on GitHub for the first time on 26 November 2026**, after I had run each of its steps by
+  hand: the tests on three Python versions, lint, format, types, the check of the Power Query, the build of the wheel,
+  and a clone with Windows line endings. Six of its seven jobs passed, on Linux and on Windows. The seventh, the one that
+  runs the schema tests, failed because of a bug of the test, not of a project file: the test read every `.json` file
+  under the checkout, and in that job the clone of Microsoft's schemas sits inside it. The test now reads only the two
+  project folders and the job runs the whole file. The Actions tab of the repository shows the state of the last run.
 
 ### Three small files
 
@@ -118,5 +121,5 @@ The schema test is skipped unless `LABTRACK_BI_SCHEMAS` points to a clone of
 ```console
 git clone --depth 1 https://github.com/microsoft/json-schemas ../json-schemas
 set LABTRACK_BI_SCHEMAS=..\json-schemas        # PowerShell: $env:LABTRACK_BI_SCHEMAS = "..\json-schemas"
-py -m pytest tests/test_pbir.py -k schemas
+py -m pytest tests/test_pbir.py
 ```
