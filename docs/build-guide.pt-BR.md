@@ -8,8 +8,10 @@ hora; a Fase B leva algumas horas. Also in English: [build-guide.md](build-guide
 
 * Um computador com Windows e o **Power BI Desktop** comum (Microsoft Store ou o instalador de powerbi.microsoft.com).
   A edição "otimizada para o Servidor de Relatórios" não abre projetos.
-* Esta pasta, descompactada em um lugar que **o OneDrive não sincroniza**. `C:\labtrack-bi` é o mais fácil: o modelo
-  procura os dados em `C:\labtrack-bi\data` por padrão.
+* Esta pasta, **inteira**, em um lugar que **o OneDrive não sincroniza**. `C:\labtrack-bi` é o mais fácil: o modelo
+  procura os dados em `C:\labtrack-bi\data` por padrão. Não abra o `labtrack.pbip` de dentro do zip: o Power BI precisa
+  das pastas que ficam ao lado dele. Clique com o botão direito no zip e escolha Extrair Tudo ou, se você tem o Git,
+  rode `git clone https://github.com/juanbezerra1/labtrack-bi C:\labtrack-bi`.
 * Python 3.10 ou mais novo, **só para as conferências** (`check-model`, `check-report`). O relatório em si não usa
   Python. Em um terminal, nesta pasta, uma vez: `py -m pip install -e .`. Daí em diante todo comando deste guia é
   `py -m labtrack_bi <comando>`; se a pasta Scripts do Python estiver no seu PATH, `labtrack-bi <comando>` faz o mesmo.
@@ -19,10 +21,11 @@ hora; a Fase B leva algumas horas. Also in English: [build-guide.md](build-guide
   language e reinicie o programa (em português, algo como Arquivo > Opções e configurações > Opções > Configurações
   regionais > Idioma do aplicativo).
 
-As versões do Power BI Desktop de setembro de 2026 em diante salvam projetos (`.pbip`) e o formato de relatório PBIR por
-padrão. Em uma versão mais antiga, ligue antes: File > Options and settings > Options > Preview features: "Power BI
-Project (.pbip) save option", "Store semantic model using TMDL format" e "Store reports using enhanced metadata format
-(PBIR)"; reinicie o Desktop.
+Desde setembro de 2026 o formato de projeto (`.pbip`) está em disponibilidade geral no Power BI Desktop e o PBIR é o
+formato padrão do relatório, então não há nada para ligar. O Desktop continua salvando `.pbix` por padrão, mas um
+projeto que você abriu como `labtrack.pbip` é salvo de volta como projeto. Em uma versão mais antiga, ligue antes as
+opções: File > Options and settings > Options > Preview features: "Power BI Project (.pbip) save option", "Store
+semantic model using TMDL format" e "Store reports using enhanced metadata format (PBIR)"; reinicie o Desktop.
 
 ## Fase A: abra o projeto e confira os números
 
@@ -188,6 +191,7 @@ elements, escolha a coluna em "Apply settings to" e ligue Data bars.
 | O que você vê | Causa provável | O que fazer |
 |---|---|---|
 | O Desktop diz que o arquivo não é compatível ou não consegue abri-lo | Edição do Servidor de Relatórios, ou versão antiga com as opções de projeto desligadas | Instale o Desktop comum, ou ligue as três opções de preview acima |
+| O Desktop diz `ReportDefinition: Required artifact is missing in '...\labtrack.Report\definition.pbir'` | As pastas `labtrack.Report` e `labtrack.SemanticModel` não estão ao lado do `labtrack.pbip`. A causa mais comum é abrir o arquivo de dentro do zip, onde o Windows extrai só aquele arquivo | Feche o Desktop. Extraia o zip inteiro (botão direito > Extrair Tudo) ou faça `git clone` do repositório, e abra o `labtrack.pbip` dessa pasta |
 | As tabelas estão vazias | Os dados ainda não foram carregados | Home > Refresh |
 | A atualização diz que não acha um arquivo ou uma pasta | `DataFolder` aponta para o lugar errado | Home > Transform data > Edit parameters; a pasta precisa conter `dim_date.csv` |
 | A atualização diz que o acesso ao caminho foi negado | A pasta está no OneDrive, ou em um lugar que o Windows protege | Mova o repositório para `C:\labtrack-bi` |
